@@ -14,9 +14,9 @@ import android.util.Log;
  *
  * <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
  */
-public class TelephoneUtil {
+public class TelephoneUtils {
 
-    private static final String TAG = "TelephoneUtil";
+    private static final String TAG = "TelephoneUtils";
 
     /**
      * IMSI是国际移动用户识别码的简称(International Mobile Subscriber Identity)
