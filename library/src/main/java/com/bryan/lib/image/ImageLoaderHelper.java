@@ -15,6 +15,13 @@ import java.util.HashMap;
 
 /**
  * Get Config of UniversalImageLoader
+ * "http://site.com/image.png" // from Web
+ "file:///mnt/sdcard/image.png" // from SD card
+ "file:///mnt/sdcard/video.mp4" // from SD card (video thumbnail)
+ "content://media/external/images/media/13" // from content provider
+ "content://media/external/video/media/13" // from content provider (video thumbnail)
+ "assets://image.png" // from assets
+ "drawable://" + R.drawable.img // from drawables (non-9patch images)
  */
 public class ImageLoaderHelper {
 	
@@ -62,6 +69,7 @@ public class ImageLoaderHelper {
 //                .diskCache(new UnlimitedDiscCache(cacheDir)) // default
                 .diskCacheSize(50 * 1024 * 1024) // 50Mb
 //                .diskCacheFileCount(1000)
+
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator()) // default
 //                .imageDownloader(new BaseImageDownloader(context)) // default
 //                .imageDecoder(new BaseImageDecoder(false)) // default
@@ -191,4 +199,6 @@ public class ImageLoaderHelper {
 		}
 		return options;
 	}
+
+
 }

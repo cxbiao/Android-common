@@ -1,5 +1,6 @@
-package com.bryan.commondemo;
+package com.bryan.commondemo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.bryan.commondemo.R;
 import com.bryan.commondemo.adapter.HomeAdapter;
 import com.bryan.commondemo.domain.ItemInfo;
 import com.bryan.lib.adapter.recyclerview.BaseQuickAdapter;
@@ -46,7 +47,20 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setOnItemClickLitener(new BaseQuickAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getBaseContext(),position+"",Toast.LENGTH_SHORT).show();
+                try {
+                    if(mDatas.get(position).isActivity()==1){
+                        Class clazz=Class.forName(mDatas.get(position).getActivityName());
+                        Intent intent=new Intent(MainActivity.this,clazz);
+                        startActivity(intent);
+
+                    }else{
+                        Intent intent=new Intent(MainActivity.this,SingleFragmentActivity.class);
+                        intent.putExtra("iteminfo",mDatas.get(position));
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -58,11 +72,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDatas() {
-        for(int i=0;i<10;i++){
-            ItemInfo item=new ItemInfo();
-            item.setInfo("info"+i);
-            mDatas.add(item);
-        }
+        ItemInfo itemInfo1=new ItemInfo();
+        itemInfo1.setInfo("图像裁剪");
+        itemInfo1.setIsActivity(1);
+        itemInfo1.setActivityName("com.bryan.commondemo.ui.CropImageActivity");
+        mDatas.add(itemInfo1);
+
+        ItemInfo itemInfo2=new ItemInfo();
+        itemInfo2.setInfo("各类对话框");
+        itemInfo2.setFragmentName("com.bryan.commondemo.ui.fragment.MyDialogFragment");
+        mDatas.add(itemInfo2);
     }
 
 

@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SimpleCropViewSample"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                />
+            <Button
+                android:id="@+id/buttonDone"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="CROP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+
+    <HorizontalScrollView
+        android:id="@+id/tab_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+       >
+
+        <LinearLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonFitImage"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="FIT IMAGE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/button1_1"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="1:1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/button3_4"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="3:4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/button4_3"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="4:3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/button9_16"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="9:16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/button16_9"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="16:9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonCustom"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="7:5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonFree"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:text="FREE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.bryan.lib.ui.widget.CropImageView
+        android:id="@+id/cropImageView"
+        android:layout_below="@id/title"
+        android:layout_above="@id/tab_bar"
+        android:paddingTop="32dp"
+        android:paddingBottom="64dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:cropMode="ratio_fit_image"
+        custom:handleColor="#86C166"
+        custom:guideColor="#AA86C166"
+        custom:overlayColor="#AA1C1C1C"
+        custom:frameColor="#86C166"
+        custom:handleSize="8dp"
+        custom:touchPadding="8dp"
+        custom:handleShowMode="show_always"
+        custom:guideShowMode="show_on_touch"
+        custom:minFrameSize="50dp"
+        custom:frameStrokeWeight="1dp"
+        custom:guideStrokeWeight="1dp"
+        />
+
+    <Button
+        android:id="@+id/buttonChangeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:text="CHANGE IMAGE"
+        android:layout_alignBottom="@id/cropImageView"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+</RelativeLayout>
