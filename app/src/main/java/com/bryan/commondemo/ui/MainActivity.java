@@ -82,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
         itemInfo2.setInfo("各类对话框");
         itemInfo2.setFragmentName("com.bryan.commondemo.ui.fragment.MyDialogFragment");
         mDatas.add(itemInfo2);
+
+        ItemInfo itemInfo3=new ItemInfo();
+        itemInfo3.setInfo("wheelview实例");
+        itemInfo3.setFragmentName("com.bryan.commondemo.ui.fragment.WheelViewFragment");
+        mDatas.add(itemInfo3);
     }
 
 

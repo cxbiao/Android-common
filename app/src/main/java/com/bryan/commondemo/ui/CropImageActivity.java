@@ -3,7 +3,6 @@ package com.bryan.commondemo.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +12,7 @@ import com.bryan.commondemo.R;
 import com.bryan.lib.log.LogUtils;
 import com.bryan.lib.ui.widget.CropImageView;
 import com.bryan.lib.util.SystemIntentBuilder;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -116,7 +116,7 @@ public class CropImageActivity extends Activity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICK_IMAGE) {
             Uri uri = data.getData();
             String file = SystemIntentBuilder.getRealPath(this, uri);
-            Bitmap bitmap = BitmapFactory.decodeFile(file);
+            Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://"+file);
             LogUtils.d(file);
             mCropView.setImageBitmap(bitmap);
 

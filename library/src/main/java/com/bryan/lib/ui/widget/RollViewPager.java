@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -444,10 +445,15 @@ public class RollViewPager extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
 
-            //Log.e("TAG", "viewpage:"+position);
 
-            int viewIndex = position % imgList.size();
-            ImageView view = imgList.get(viewIndex);
+            int viewIndex=position%imgList.size();
+            ImageView view=imgList.get(viewIndex);
+            ViewParent vp = view.getParent();
+            if (vp != null) {
+                ViewGroup parent = (ViewGroup) vp;
+                parent.removeView(view);
+
+            }
             container.addView(view);
 
 
@@ -472,7 +478,7 @@ public class RollViewPager extends ViewPager {
                             int upX = (int) event.getX();
 
                             long upTime = System.currentTimeMillis();
-                            if (upX == downX && upTime - downTime < 500) {
+                            if (Math.abs(upX - downX)<20 && upTime - downTime < 500) {
                                 if (clickListener != null) {
                                     int index = 0;
                                     if (pointGroup != null && imgList.size() > pointGroup.getChildCount()) {
@@ -497,7 +503,7 @@ public class RollViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+           // container.removeView((View) object);
         }
     }
 
