@@ -1,9 +1,18 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.1"
-
+    signingConfigs {
+        config {
+            keyAlias 'bryan'
+            keyPassword '123456'
+            storeFile file('../key/bryan.jks')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.bryan.common"
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
@@ -15,15 +24,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-    
     lintOptions {
         abortOnError false
-      }
-   
-
-
+    }
 }
 
 dependencies {
@@ -31,4 +37,14 @@ dependencies {
     compile project(':library')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
+}
+
+//打包后复制到目录
+task copyTask(type: Copy) {
+    from 'build/outputs/apk'
+    SimpleDateFormat  sf=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+    String path=sf.format(new Date())
+    exclude '*unaligned*'
+    into '../'+path
+
 }
