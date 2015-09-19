@@ -21,14 +21,35 @@ android {
         versionName VERSION_NAME
     }
     buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+        }
         release {
-            minifyEnabled false
+            //不显示日志
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
+            minifyEnabled true
+           //zipalign优化
+            zipAlignEnabled true
+            //移除未使用的资源
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
     }
     lintOptions {
         abortOnError false
+    }
+    productFlavors {
+        baidu {
+        }
+        qq {
+        }
+        _360 {
+        }
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
     }
 }
 

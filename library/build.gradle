@@ -7,8 +7,7 @@ android {
     defaultConfig {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
+
     }
     buildTypes {
         release {
@@ -25,7 +24,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.0'
-    compile files('libs/universal-image-loader-1.9.4.jar')
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile files('libs/crypto.jar')
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
