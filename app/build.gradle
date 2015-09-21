@@ -51,6 +51,12 @@ android {
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
     }
+
+    sourceSets {
+        main {
+            java.srcDirs=['src/main/java','src/main/java-gen']
+        }
+    }
 }
 
 dependencies {
