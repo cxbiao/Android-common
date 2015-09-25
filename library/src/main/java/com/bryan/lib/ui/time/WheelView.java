@@ -32,7 +32,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -40,11 +39,11 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+import com.bryan.lib.R;
 import com.bryan.lib.util.ScreenUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import com.bryan.lib.R;
 
 /**
  * Numeric wheel view.
@@ -583,7 +582,7 @@ public class WheelView extends View {
 
 		int maxLength = getMaxTextLength();
 		if (maxLength > 0) {
-			float textWidth = FloatMath.ceil(Layout.getDesiredWidth("0",
+			double textWidth = Math.ceil(Layout.getDesiredWidth("0",
 					itemsPaint));
 			itemsWidth = (int) (maxLength * textWidth);
 		} else {
@@ -593,7 +592,7 @@ public class WheelView extends View {
 
 		labelWidth = 0;
 		if (label != null && label.length() > 0) {
-			labelWidth = (int) FloatMath.ceil(Layout.getDesiredWidth(label,
+			labelWidth = (int) Math.ceil(Layout.getDesiredWidth(label,
 					valuePaint));
 		}
 

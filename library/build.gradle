@@ -18,6 +18,8 @@ android {
     lintOptions {
         abortOnError false
      }
+
+
 }
 
 dependencies {
@@ -28,7 +30,8 @@ dependencies {
     compile files('libs/crypto.jar')
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.alibaba:fastjson:1.1.45.android'
     compile 'de.greenrobot:greendao:2.0.0'
     compile files('libs/FlyDialog-1.0.jar')
+    compile files('libs/commons-io-2.4.jar')
+    compile files('libs/fastjson-1.1.45.android.jar')
 }
