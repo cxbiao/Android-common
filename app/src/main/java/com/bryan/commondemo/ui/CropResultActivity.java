@@ -1,15 +1,15 @@
 package com.bryan.commondemo.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.bryan.commondemo.R;
+import com.bryan.lib.ui.BaseActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
-public class CropResultActivity extends Activity {
+public class CropResultActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

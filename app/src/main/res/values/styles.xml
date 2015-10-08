@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -13,11 +13,32 @@
         <item name="colorPrimary">@color/material_blue_500</item>
         <item name="colorPrimaryDark">@color/material_blue_700</item>
         <item name="colorAccent">@color/material_green_A200</item>
+         <item name="android:windowAnimationStyle">@style/Animation</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
       <!--   <item name="android:listDivider">@drawable/divider_bg02</item> -->
     </style>
+
+
+    <style name="Animation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/push_right_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/push_right_out</item>
+        <!--
+        <item name="android:taskOpenEnterAnimation">@anim/push_left_in</item>
+        <item name="android:taskOpenExitAnimation">@anim/push_left_out</item>
+        <item name="android:taskCloseEnterAnimation">@anim/push_right_in</item>
+        <item name="android:taskCloseExitAnimation">@anim/push_right_out</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/push_left_in</item>
+        <item name="android:taskToFrontExitAnimation">@anim/push_left_out</item>
+        <item name="android:taskToBackEnterAnimation">@anim/push_right_in</item>
+        <item name="android:taskToBackExitAnimation">@anim/push_right_out</item>
+
+        -->
+    </style>
+
 
 </resources>

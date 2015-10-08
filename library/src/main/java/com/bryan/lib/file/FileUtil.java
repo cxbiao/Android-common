@@ -1,5 +1,6 @@
 package com.bryan.lib.file;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -18,26 +19,68 @@ import java.util.Date;
 
 public class FileUtil {
 
+	private static final String APPNAME = "winstar";
 	private static final char HEX_DIGITS[] = { '0', '1', '2', '3', '4', '5',
 			'6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+
+	private static String getCacheDir(Context context){
+		File crashDir;
+		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+			crashDir=new File(Environment.getExternalStorageDirectory()+"/"+APPNAME);
+		}else{
+			crashDir=context.getFilesDir();
+		}
+		if(!crashDir.exists()){
+			crashDir.mkdirs();
+		}
+		return crashDir.getAbsolutePath();
+	}
+
+	public static String GetVideoPath(Context context) {
+		String filePathString = getCacheDir(context)+"/video";
+		File filepath = new File(filePathString);
+		if (!filepath.exists()) {
+			filepath.mkdirs();
+		}
+		return filePathString;
+	}
+
+	public static String GetImagePath(Context context) {
+		String filePathString = getCacheDir(context)+"/image";
+		File filepath = new File(filePathString);
+		if (!filepath.exists()) {
+			filepath.mkdirs();
+		}
+		return filePathString;
+	}
+
+	public static String GetAudioPath(Context context) {
+		String filePathString = getCacheDir(context)+"/audio";
+		File filepath = new File(filePathString);
+		if (!filepath.exists()) {
+			filepath.mkdirs();
+		}
+		return filePathString;
+	}
 
 
 
 	public static String GetImageName() {
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
 		return dateFormat.format(date) + ".jpg";
 	}
 
 	public static String GetVideoName() {
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
 		return dateFormat.format(date) + ".mp4";
 	}
 
 	public static String GetAudioName() {
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
 		return dateFormat.format(date) + ".amr";
 	}
 

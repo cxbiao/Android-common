@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -235,7 +236,7 @@ public class ImageUtils {
      * @param reqHeight
      * @return
      */
-    private static int calculateInSampleSize(BitmapFactory.Options options,
+    public static int calculateInSampleSize(BitmapFactory.Options options,
                                              int reqWidth, int reqHeight) {
         // 源图片的宽度
         int width = options.outWidth;
@@ -260,7 +261,7 @@ public class ImageUtils {
      * @param reqHeight
      * @return
      */
-    private Bitmap decodeSampledBitmapFromResource(String pathName,
+    public Bitmap decodeSampledBitmapFromFile(String pathName,
                                                    int reqWidth, int reqHeight) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -277,13 +278,53 @@ public class ImageUtils {
     }
 
 
+    public static Bitmap loadImage(Context context,String pathName) {
+        // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+
+        int reqWidth=context.getResources().getDisplayMetrics().widthPixels;
+        int reqHeight=context.getResources().getDisplayMetrics().heightPixels;
+        // 调用上面定义的方法计算inSampleSize值
+        options.inSampleSize = calculateInSampleSize(options, reqWidth,
+                reqHeight);
+        // 使用获取到的inSampleSize值再次解析图片
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(pathName, options);
+
+        return bitmap;
+    }
+
+    public static boolean compressImage(Context context,int quality, String srcImaPath, String destImgPath) {
+        InputStream in = null;
+        Bitmap bit = null;
+        try {
+            bit =loadImage(context,srcImaPath);
+            FileOutputStream fileOutputStream = new FileOutputStream(destImgPath);
+            bit.compress(Bitmap.CompressFormat.JPEG, quality, fileOutputStream);
+            fileOutputStream.close();
+            ///File file=new File(destImgPath);
+            //long aaa=file.length()/1024;
+            //Log.e("大小", file.length()/1024+"");
+        } catch (Exception e) {
+            // TODO: handle exception
+            return false;
+        } finally {
+            if(bit!=null)
+                bit.recycle();
+        }
+        return true;
+    }
+
+
     /**
      * 根据ImageView获得适当的压缩的宽和高
      *
      * @param imageView
      * @return
      */
-    private ImageSize getImageViewWidth(ImageView imageView) {
+    public ImageSize getImageViewWidth(ImageView imageView) {
         ImageSize imageSize = new ImageSize();
         final DisplayMetrics displayMetrics = imageView.getContext()
                 .getResources().getDisplayMetrics();

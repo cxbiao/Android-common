@@ -2,7 +2,6 @@ package com.bryan.commondemo.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -13,6 +12,7 @@ import com.bryan.commondemo.R;
 import com.bryan.commondemo.adapter.HomeAdapter;
 import com.bryan.commondemo.domain.ItemInfo;
 import com.bryan.lib.adapter.recyclerview.BaseQuickAdapter;
+import com.bryan.lib.ui.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * 代码库的演示工程
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Bind(R.id.recyclerview)
@@ -87,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         itemInfo3.setInfo("wheelview实例");
         itemInfo3.setFragmentName("com.bryan.commondemo.ui.fragment.WheelViewFragment");
         mDatas.add(itemInfo3);
+
+
+        ItemInfo itemInfo4=new ItemInfo();
+        itemInfo4.setInfo("多媒体");
+        itemInfo4.setFragmentName("com.bryan.commondemo.ui.fragment.MediaFragment");
+        mDatas.add(itemInfo4);
     }
 
 

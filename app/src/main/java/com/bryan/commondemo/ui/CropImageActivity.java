@@ -1,6 +1,5 @@
 package com.bryan.commondemo.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +9,7 @@ import android.view.View;
 
 import com.bryan.commondemo.R;
 import com.bryan.lib.log.LogUtils;
+import com.bryan.lib.ui.BaseActivity;
 import com.bryan.lib.ui.widget.CropImageView;
 import com.bryan.lib.util.SystemIntentBuilder;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 /**
  * Created by bryan on 2015/9/3.
  */
-public class CropImageActivity extends Activity {
+public class CropImageActivity extends BaseActivity {
 
     public static final int REQUEST_CODE_PICK_IMAGE = 1;
 

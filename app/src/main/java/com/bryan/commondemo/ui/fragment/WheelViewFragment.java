@@ -1,9 +1,7 @@
 package com.bryan.commondemo.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +26,12 @@ import butterknife.OnClick;
 /**
  * Created by bryan on 2015/9/13.
  */
-public class WheelViewFragment extends Fragment {
+public class WheelViewFragment extends BaseFragment {
 
     @Bind(R.id.tvTime)
     TextView tvTime;
     @Bind(R.id.tvOptions)
     TextView tvOptions;
-    private Context context;
     private ArrayList<String> options1Items = new ArrayList<String>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<ArrayList<ArrayList<String>>>();
@@ -43,11 +40,7 @@ public class WheelViewFragment extends Fragment {
     OptionsPopupWindow pwOptions;
 
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = getActivity();
-    }
+
 
     @Nullable
     @Override

@@ -3,16 +3,16 @@ package com.bryan.commondemo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.bryan.commondemo.R;
 import com.bryan.commondemo.domain.ItemInfo;
+import com.bryan.lib.ui.BaseActivity;
 
 /**
  * Created by bryan on 2015/7/12.
  */
-public  class SingleFragmentActivity extends FragmentActivity {
+public  class SingleFragmentActivity extends BaseActivity {
 
 
     @Override
