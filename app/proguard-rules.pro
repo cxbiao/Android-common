@@ -66,8 +66,6 @@ public static final android.os.Parcelable$Creator *;
 #声明第三方jar包,不用管第三方jar包中的.so文件(如果有)
 #-libraryjars libs/crypto.jar
 #不混淆第三方jar包中的类
--keep class com.nostra13.universalimageloader.** {*;}
--keep class com.facebook.** {*;}
-#-keep class com.squareup.okhttp.** {*;}
-#-keep class okio.** {*;}
+#-keep class com.nostra13.universalimageloader.** {*;}
+
 

@@ -49,6 +49,10 @@ public abstract class BaseQuickAdapter<T> extends BaseAdapter
 
 	}
 
+	public void setItems(List<T> data){
+		this.mDatas=data;
+	}
+
 	public abstract void convert(BaseAdapterHelper helper, T item);
 
 	private BaseAdapterHelper getViewHolder(int position, View convertView,

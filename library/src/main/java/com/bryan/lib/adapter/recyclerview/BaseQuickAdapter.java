@@ -72,6 +72,9 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<BaseAdapt
 
 	}
 
+	public void setItems(List<T> data){
+		this.mDatas=data;
+	}
 
 	public abstract void convert(BaseAdapterHelper helper, T item);
 	@Override
