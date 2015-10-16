@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import java.util.List;
+
 /**
  * 
  * @author bryan
@@ -29,7 +30,7 @@ public class TabUtils {
 		void onClick(View view, int index);
 	}
 	
-	public TabUtils(FragmentManager fragmentManager,List<Fragment> fragments,int container){
+	public TabUtils(FragmentManager fragmentManager, List<Fragment> fragments, int container){
 		this.fragmentManager=fragmentManager;
 		this.fragments=fragments;
 		this.containerViewId=container;
@@ -59,12 +60,6 @@ public class TabUtils {
 				
 				@Override
 				public void onClick(View v) {
-					if(currentIndex==index){
-						return;
-					}
-					getRealChild(tabGroup.getChildAt(currentIndex)).setSelected(false);
-					getRealChild(tabGroup.getChildAt(index)).setSelected(true);
-					currentIndex=index;
 					setTab(index);
 					if(listener!=null){
 						listener.onClick(v, index);
@@ -77,6 +72,9 @@ public class TabUtils {
 	}
 	
 	public void setTab(int index){
+		if(currentIndex==index){
+			return;
+		}
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		for(Fragment fragment:fragments){
 			if (fragment.isAdded()) {
@@ -86,6 +84,9 @@ public class TabUtils {
 		if (!fragments.get(index).isAdded()) {
 			transaction.add(containerViewId, fragments.get(index));
 		}
+		getRealChild(tabGroup.getChildAt(currentIndex)).setSelected(false);
+		getRealChild(tabGroup.getChildAt(index)).setSelected(true);
+		currentIndex=index;
 		transaction.show(fragments.get(index)).commit();
 	}
 	

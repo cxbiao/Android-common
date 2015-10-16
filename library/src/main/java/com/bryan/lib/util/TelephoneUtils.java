@@ -1,13 +1,15 @@
 package com.bryan.lib.util;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import android.content.Context;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
 /**
  * 
@@ -54,6 +56,15 @@ public class TelephoneUtils {
         return IMEI;
     }
 
+
+    /** wifi mac地址 */
+    public static String getMacAddress(Context context) {
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        String mac = info.getMacAddress();
+        Log.i(TAG, " MAC：" + mac);
+        return mac;
+    }
     /**
      * Print telephone info.
      */

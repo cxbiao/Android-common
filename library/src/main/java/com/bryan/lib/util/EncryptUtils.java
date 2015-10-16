@@ -1,326 +1,306 @@
 package com.bryan.lib.util;
-import android.content.Context;
+
 import android.util.Base64;
-
-import com.facebook.crypto.Crypto;
-import com.facebook.crypto.Entity;
-import com.facebook.crypto.keychain.SharedPrefsBackedKeyChain;
-import com.facebook.crypto.util.SystemNativeCryptoLibrary;
-
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 
 /**
- * 加密工具类
- * 
- * @author bryan
- * 需要libconceal.so和libcryptox.so从及crypto.jar
- * 
+ * 安全加密类
  */
 public class EncryptUtils {
-	private static final int BUFFER_SIZE = 1024;
-    private static Crypto mCrypto;
-    
-    
-    private static Crypto getCrypto(Context context){
-    	if(mCrypto==null){
-    		synchronized(EncryptUtils.class){
-    			if(mCrypto==null){
-    				mCrypto=new Crypto(new SharedPrefsBackedKeyChain(context), new SystemNativeCryptoLibrary());
-    			}
-    		}
-    	}
-    	return mCrypto;
+
+
+    private static final int BUFFER_SIZE = 1024;
+    public static String getMD5(String content) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(content.getBytes());
+            return getHashString(digest);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-	
-	
-	/**
-	 * 移除加密文件
-	 * 
-	 * @param context
-	 * @param key
-	 */
-	public static void removeCrypto(Context context, String key) {
-		File file = new File(context.getFilesDir() + "/" + encryptBASE64(key + context.getPackageName()));
-		if (file.exists()) {
-			file.delete();
-		}
-	}
 
-	/**
-	 * 文件加密
-	 */
-	public static void encyptCrypto(Context context, String key, String value) {
-		try {
-			// Creates a new Crypto object with default implementations of
-			// a key chain as well as native library.
-			Crypto crypto =getCrypto(context);
-			// Check for whether the crypto functionality is available
-			// This might fail if Android does not load libaries correctly.
-			if (!crypto.isAvailable()) {
-				return;
-			}
+    private static String getHashString(MessageDigest digest) {
+        StringBuilder builder = new StringBuilder();
+        for (byte b : digest.digest()) {
+            builder.append(Integer.toHexString((b >> 4) & 0xf));
+            builder.append(Integer.toHexString(b & 0xf));
+        }
+        return builder.toString();
+    }
 
-			OutputStream fileStream = new BufferedOutputStream(new FileOutputStream(context.getFilesDir() + "/" + encryptBASE64(key + context.getPackageName())));
-			// Creates an output stream which encrypts the data as
-			// it is written to it and writes it out to the file.
-			OutputStream outputStream = crypto.getCipherOutputStream(fileStream, new Entity(context.getPackageName()));
 
-			// Write plaintext to it.
-			outputStream.write(value.getBytes());
-			outputStream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    private static byte[] coderByDES(byte[] plainText, String key, int mode)
+            throws InvalidKeyException, InvalidKeySpecException,
+            NoSuchAlgorithmException, NoSuchPaddingException,
+            BadPaddingException, IllegalBlockSizeException,
+            UnsupportedEncodingException {
+        SecureRandom sr = new SecureRandom();
+        byte[] resultKey = makeKey(key);
+        DESKeySpec desSpec = new DESKeySpec(resultKey);
+        SecretKey secretKey = SecretKeyFactory.getInstance("DES")
+                .generateSecret(desSpec);
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(mode, secretKey, sr);
+        return cipher.doFinal(plainText);
+    }
 
-	}
+    /** */
+    /**
+     * 生产8位的key
+     *
+     * @param key 字符串形式
+     * @return
+     * @throws UnsupportedEncodingException
+     * @author yayagepei
+     * @date 2008-10-8
+     */
+    private static byte[] makeKey(String key)
+            throws UnsupportedEncodingException {
+        byte[] keyByte = new byte[8];
+        byte[] keyResult = key.getBytes("UTF-8");
+        for (int i = 0; i < keyResult.length && i < keyByte.length; i++) {
+            keyByte[i] = keyResult[i];
+        }
+        return keyByte;
+    }
 
-	/**
-	 * 文件解密
-	 * 
-	 * @return
-	 */
-	public static String decryptCrypto(Context context, String key) {
-		try {
-			// Creates a new Crypto object with default implementations of
-			// a key chain as well as native library.
-			Crypto crypto = getCrypto(context);
-			// Check for whether the crypto functionality is available
-			// This might fail if Android does not load libaries correctly.
-			if (!crypto.isAvailable()) {
-				return "";
-			}
+    /** */
+    /**
+     * DES加密
+     *
+     * @param plainText 明文
+     * @param key       密钥
+     * @return
+     * @author yayagepei
+     * @date 2008-10-8
+     */
+    public static String encoderByDES(String plainText, String key) {
+        try {
+            byte[] result = coderByDES(plainText.getBytes("UTF-8"), key,
+                    Cipher.ENCRYPT_MODE);
+            return byteArr2HexStr(result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+    }
 
-			// Get the file to which ciphertext has been written.
-			FileInputStream fileStream = new FileInputStream(new File(context.getFilesDir() + "/" + encryptBASE64(key + context.getPackageName())));
+    /** */
+    /**
+     * DES解密
+     *
+     * @param secretText 密文
+     * @param key        密钥
+     * @return
+     * @author yayagepei
+     * @date 2008-10-8
+     */
+    public static String decoderByDES(String secretText, String key) {
+        try {
+            byte[] result = coderByDES(hexStr2ByteArr(secretText), key,
+                    Cipher.DECRYPT_MODE);
+            return new String(result, "UTF-8");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
+        }
+    }
 
-			// Creates an input stream which decrypts the data as
-			// it is read from it.
-			InputStream inputStream = crypto.getCipherInputStream(fileStream, new Entity(context.getPackageName()));
+    /** */
+    /**
+     * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]
+     * hexStr2ByteArr(String strIn) 互为可逆的转换过程
+     *
+     * @param arrB 需要转换的byte数组
+     * @return 转换后的字符串
+     */
+    private static String byteArr2HexStr(byte[] arrB) {
+        int iLen = arrB.length;
+        // 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍
+        StringBuffer sb = new StringBuffer(iLen * 2);
+        for (int i = 0; i < iLen; i++) {
+            int intTmp = arrB[i];
+            // 把负数转换为正数
+            while (intTmp < 0) {
+                intTmp = intTmp + 256;
+            }
+            // 小于0F的数需要在前面补0
+            if (intTmp < 16) {
+                sb.append("0");
+            }
+            sb.append(Integer.toString(intTmp, 16));
+        }
+        return sb.toString();
+    }
 
-			// Read into a byte array.
-			int read;
-			byte[] buffer = new byte[1024];
+    /** */
+    /**
+     * 将表示16进制值的字符串转换为byte数组， 和public static String byteArr2HexStr(byte[] arrB)
+     * 互为可逆的转换过程
+     *
+     * @param strIn 需要转换的字符串
+     * @return 转换后的byte数组
+     * @throws NumberFormatException
+     */
+    private static byte[] hexStr2ByteArr(String strIn)
+            throws NumberFormatException {
+        byte[] arrB = strIn.getBytes();
+        int iLen = arrB.length;
+        // 两个字符表示一个字节，所以字节数组长度是字符串长度除以2
+        byte[] arrOut = new byte[iLen / 2];
+        for (int i = 0; i < iLen; i = i + 2) {
+            String strTmp = new String(arrB, i, 2);
+            arrOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);
+        }
+        return arrOut;
+    }
 
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			// You must read the entire stream to completion.
-			// The verification is done at the end of the stream.
-			// Thus not reading till the end of the stream will cause
-			// a security bug. For safety, you should not
-			// use any of the data until it's been fully read or throw
-			// away the data if an exception occurs.
-			while ((read = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, read);
-			}
-			String out = new String(outputStream.toByteArray());
-			inputStream.close();
-			outputStream.close();
-			return out;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
 
-	}
 
-	/**
-	 * BASE64 加密
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static String encryptBASE64(String str) {
-		if (str == null || str.length() == 0) {
-			return null;
-		}
-		try {
-			byte[] encode = str.getBytes("UTF-8");
-			// base64 加密
-			return new String(Base64.encode(encode, 0, encode.length, Base64.DEFAULT), "UTF-8");
+    /**
+     * BASE64 加密
+     *
+     * @param str
+     * @return
+     */
+    public static String encryptBASE64(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+        try {
+            byte[] encode = str.getBytes("UTF-8");
+            // base64 加密
+            return new String(Base64.encode(encode, 0, encode.length, Base64.DEFAULT), "UTF-8");
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * BASE64 解密
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static String decryptBASE64(String str) {
-		if (str == null || str.length() == 0) {
-			return null;
-		}
-		try {
-			byte[] encode = str.getBytes("UTF-8");
-			// base64 解密
-			return new String(Base64.decode(encode, 0, encode.length, Base64.DEFAULT), "UTF-8");
+    /**
+     * BASE64 解密
+     *
+     * @param str
+     * @return
+     */
+    public static String decryptBASE64(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+        try {
+            byte[] encode = str.getBytes("UTF-8");
+            // base64 解密
+            return new String(Base64.decode(encode, 0, encode.length, Base64.DEFAULT), "UTF-8");
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * GZIP 加密
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static byte[] encryptGZIP(String str) {
-		if (str == null || str.length() == 0) {
-			return null;
-		}
+    /**
+     * GZIP 加密
+     *
+     * @param str
+     * @return
+     */
+    public static byte[] encryptGZIP(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
 
-		try {
-			// gzip压缩
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			GZIPOutputStream gzip = new GZIPOutputStream(baos);
-			gzip.write(str.getBytes("UTF-8"));
+        try {
+            // gzip压缩
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            GZIPOutputStream gzip = new GZIPOutputStream(baos);
+            gzip.write(str.getBytes("UTF-8"));
 
-			gzip.close();
+            gzip.close();
 
-			byte[] encode = baos.toByteArray();
+            byte[] encode = baos.toByteArray();
 
-			baos.flush();
-			baos.close();
+            baos.flush();
+            baos.close();
 
-			// base64 加密
-			return encode;
-			// return new String(encode, "UTF-8");
+            // base64 加密
+            return encode;
+            // return new String(encode, "UTF-8");
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * GZIP 解密
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static String decryptGZIP(String str) {
-		if (str == null || str.length() == 0) {
-			return null;
-		}
+    /**
+     * GZIP 解密
+     *
+     * @param str
+     * @return
+     */
+    public static String decryptGZIP(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
 
-		try {
+        try {
 
-			byte[] decode = str.getBytes("UTF-8");
+            byte[] decode = str.getBytes("UTF-8");
 
-			// gzip 解压缩
-			ByteArrayInputStream bais = new ByteArrayInputStream(decode);
-			GZIPInputStream gzip = new GZIPInputStream(bais);
+            // gzip 解压缩
+            ByteArrayInputStream bais = new ByteArrayInputStream(decode);
+            GZIPInputStream gzip = new GZIPInputStream(bais);
 
-			byte[] buf = new byte[BUFFER_SIZE];
-			int len = 0;
+            byte[] buf = new byte[BUFFER_SIZE];
+            int len = 0;
 
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-			while ((len = gzip.read(buf, 0, BUFFER_SIZE)) != -1) {
-				baos.write(buf, 0, len);
-			}
-			gzip.close();
-			baos.flush();
+            while ((len = gzip.read(buf, 0, BUFFER_SIZE)) != -1) {
+                baos.write(buf, 0, len);
+            }
+            gzip.close();
+            baos.flush();
 
-			decode = baos.toByteArray();
+            decode = baos.toByteArray();
 
-			baos.close();
+            baos.close();
 
-			return new String(decode, "UTF-8");
+            return new String(decode, "UTF-8");
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * 十六进制字符串 转换为 byte[]
-	 * 
-	 * @param hexString
-	 *            the hex string
-	 * @return byte[]
-	 */
-	public static byte[] hexStringToBytes(String hexString) {
-		if (hexString == null || hexString.equals("")) {
-			return null;
-		}
-		int length = hexString.length() / 2;
-		char[] hexChars = hexString.toCharArray();
-		byte[] d = new byte[length];
-		for (int i = 0; i < length; i++) {
-			int pos = i * 2;
-			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
-		}
-		return d;
-	}
-
-	/**
-	 * Convert char to byte
-	 * 
-	 * @param c
-	 *            char
-	 * @return byte
-	 */
-	private static byte charToByte(char c) {
-		return (byte) "0123456789abcdef".indexOf(c);
-		// return (byte) "0123456789ABCDEF".indexOf(c);
-	}
-
-	/**
-	 * byte[] 转换为 十六进制字符串
-	 * 
-	 * @param src
-	 * @return
-	 */
-	public static String bytesToHexString(byte[] src) {
-		StringBuilder stringBuilder = new StringBuilder("");
-
-		if (src == null || src.length <= 0) {
-			return null;
-		}
-
-		for (int i = 0; i < src.length; i++) {
-			int v = src[i] & 0xFF;
-			String hv = Integer.toHexString(v);
-			if (hv.length() < 2) {
-				stringBuilder.append(0);
-			}
-			stringBuilder.append(hv);
-		}
-		return stringBuilder.toString();
-	}
 }
+
