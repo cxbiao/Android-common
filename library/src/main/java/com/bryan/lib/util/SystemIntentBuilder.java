@@ -5,9 +5,39 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.telephony.SmsManager;
+import android.text.TextUtils;
 
 public class SystemIntentBuilder {
-	
+	/**
+	 *<uses-permission android:name="android.permission.CALL_PHONE"/>
+	 */
+	public static Intent getCall(String telNum) {
+		Intent intent=new Intent();
+		intent.setAction(Intent.ACTION_CALL);
+		intent.setData(Uri.parse("tel:" + telNum)); //数据的类型 ： uri格式的数据
+		return  intent;
+	}
+
+	public static Intent getSms(String phone,String sms) {
+		Intent intent=new Intent();
+		intent.setAction(Intent.ACTION_SENDTO);
+		if(!TextUtils.isEmpty(phone)){
+			intent.setData(Uri.parse("smsto:"+phone));
+		}else{
+			intent.setData(Uri.parse("smsto:"));
+		}
+		intent.putExtra("sms_body", sms);
+		return  intent;
+	}
+
+	/**
+	 * <uses-permission android:name="android.permission.SEND_SMS"/>
+	 */
+	public static void sendMsg(String phone,String sms){
+		SmsManager smsManager=SmsManager.getDefault();
+		smsManager.sendTextMessage(phone, null, sms, null, null);
+	}
 	public static Intent getPickImageIntent(){
 		Intent intent = new Intent(Intent.ACTION_PICK).setType("image/*");
 		return intent;

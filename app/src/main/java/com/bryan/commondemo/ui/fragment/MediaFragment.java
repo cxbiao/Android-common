@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bryan.commondemo.R;
+import com.bryan.lib.audio.AudioActvity;
 import com.bryan.lib.camera.RecordVideoActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,8 +29,15 @@ public class MediaFragment extends BaseFragment {
 
 
     @OnClick(R.id.videoRecord)
-    public void videoRecord(View v){
+        public void videoRecord(View v){
         Intent intent=new Intent(context, RecordVideoActivity.class);
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.audioRecord)
+    public void audioRecord(View v){
+        Intent intent=new Intent(context, AudioActvity.class);
         startActivity(intent);
     }
 

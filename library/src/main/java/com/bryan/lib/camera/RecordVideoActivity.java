@@ -11,6 +11,7 @@ import android.media.MediaRecorder.OnInfoListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -72,7 +73,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.record_video);
+		setContentView(R.layout.activity_record_video);
 
 		sv_view = (SurfaceView) findViewById(R.id.sv_view);
 
@@ -86,6 +87,26 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 
 		// 声明Surface不维护自己的缓冲区，针对Android3.0以下设备支持
 		sv_view.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		sv_view.getHolder().addCallback(new SurfaceHolder.Callback() {
+			@Override
+			public void surfaceCreated(SurfaceHolder holder) {
+				Log.e(TAG, "surfaceCreated");
+				InitCamera();
+
+			}
+
+			@Override
+			public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+				Log.e(TAG,"surfaceChanged");
+			}
+
+			@Override
+			public void surfaceDestroyed(SurfaceHolder holder) {
+				Log.e(TAG,"surfaceDestroyed");
+				ReleaseMediaRecorder();
+				ReleaseCamera();
+			}
+		});
 
 		if (file == null) {
 			String path = FileUtil.GetVideoPath(this)+"/"+ FileUtil.GetVideoName();
@@ -97,14 +118,14 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 			file.delete();
 		}
 
-		mHandler.postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				InitCamera();
-			}
-		}, 200);
+//		mHandler.postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				InitCamera();
+//			}
+//		}, 200);
 
 	}
 
@@ -388,7 +409,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 
 		if (action.equals(Recording_Finish)) {
 
-			FastDialog.ShowNormalDialog(this, "提示,", "视频文件大小为" + formatCacheSize(file.length()) + ",确定要发送吗?", new OnBtnLeftClickL() {
+			FastDialog.ShowNormalDialog(this, "提示,", "视频文件大小为" + formatCacheSize(file.length()) + ",确定要发送吗?",false, new OnBtnLeftClickL() {
 				@Override
 				public void onBtnLeftClick() {
 					Intent intent = new Intent();

@@ -27,7 +27,7 @@ public class FastDialog {
     public static BaseAnimatorSet bas_in=new FadeEnter();
     public static BaseAnimatorSet bas_out=new FadeExit();
 
-    public static void ShowNormalDialog(Context context,String title,String content, final OnBtnLeftClickL onBtnLeftClickL, final OnBtnRightClickL onBtnRightClickL){
+    public static void ShowNormalDialog(Context context,String title,String content, final boolean isNeedDismiss,final OnBtnLeftClickL onBtnLeftClickL, final OnBtnRightClickL onBtnRightClickL){
         final NormalDialog dialog = new NormalDialog(context);
         dialog.isTitleShow(true)//
                 .title(title)
@@ -50,7 +50,10 @@ public class FastDialog {
                 if (onBtnLeftClickL != null) {
                     onBtnLeftClickL.onBtnLeftClick();
                 }
-                dialog.dismiss();
+                if(isNeedDismiss){
+                    dialog.dismiss();
+                }
+
             }
         });
 
@@ -60,13 +63,15 @@ public class FastDialog {
                 if (onBtnRightClickL!=null){
                     onBtnRightClickL.onBtnRightClick();
                 }
-                dialog.dismiss();
+                if(isNeedDismiss){
+                    dialog.dismiss();
+                }
             }
         });
     }
 
 
-    public static void ShowTipDialog(Context context,String title,String content, final OnBtnClickL onBtnClickL){
+    public static void ShowTipDialog(Context context,String title,String content,final boolean isNeedDismiss, final OnBtnClickL onBtnClickL){
         final NormalTipDialog dialog = new NormalTipDialog(context);
         dialog.title(title)
                 .titleGravity(Gravity.CENTER)
@@ -88,13 +93,15 @@ public class FastDialog {
                 if (onBtnClickL != null) {
                     onBtnClickL.onBtnClick();
                 }
-                dialog.dismiss();
+                if(isNeedDismiss){
+                    dialog.dismiss();
+                }
             }
         });
     }
 
 
-    public static void ShowListDialog(Context context,String[] stringItems, final OnOperItemClickL onOperItemClickL){
+    public static void ShowListDialog(Context context,String[] stringItems, final boolean isNeedDismiss,final OnOperItemClickL onOperItemClickL){
         final NormalListDialog dialog = new NormalListDialog(context, stringItems);
         dialog.isTitleShow(false)
                 .isLayoutAnimation(false)
@@ -111,12 +118,14 @@ public class FastDialog {
                 if (onOperItemClickL != null) {
                     onOperItemClickL.onOperItemClick(parent, view, position, id);
                 }
-                dialog.dismiss();
+                if(isNeedDismiss){
+                    dialog.dismiss();
+                }
             }
         });
     }
 
-    public static void ShowActionSheetDialog(Context context,String[] stringItems,final OnOperItemClickL onOperItemClickL){
+    public static void ShowActionSheetDialog(Context context,String[] stringItems,final boolean isNeedDismiss,final OnOperItemClickL onOperItemClickL){
         final ActionSheetDialog dialog = new ActionSheetDialog(context, stringItems, null);
         dialog.isTitleShow(false)
                 .isLayoutAnimation(false)
@@ -128,7 +137,9 @@ public class FastDialog {
                if(onOperItemClickL!=null){
                    onOperItemClickL.onOperItemClick(parent,view,position,id);
                }
-                dialog.dismiss();
+                if(isNeedDismiss){
+                    dialog.dismiss();
+                }
             }
         });
     }

@@ -54,7 +54,7 @@ public class MyDialogFragment extends BaseFragment{
 
     @OnClick(R.id.baseDialog)
     public void baseDialog(View v){
-        FastDialog.ShowNormalDialog(context, "提示", "是否确定退出程序?", null, new OnBtnRightClickL() {
+        FastDialog.ShowNormalDialog(context, "提示", "是否确定退出程序?",true,null, new OnBtnRightClickL() {
             @Override
             public void onBtnRightClick() {
                 T.showShort(context, "确定");
@@ -66,7 +66,7 @@ public class MyDialogFragment extends BaseFragment{
     @OnClick(R.id.tipDialog)
     public void tipDialog(View v){
 
-        FastDialog.ShowTipDialog(context, "提示", "你今天的抢购名额已用完~", new OnBtnClickL() {
+        FastDialog.ShowTipDialog(context, "提示", "你今天的抢购名额已用完~",true, new OnBtnClickL() {
             @Override
             public void onBtnClick() {
                 T.showShort(context, "确定");
@@ -79,7 +79,7 @@ public class MyDialogFragment extends BaseFragment{
     public void listDialog(View v){
 
         final String[] stringItems = {"收藏", "下载", "分享", "删除", "歌手", "专辑"};
-        FastDialog.ShowListDialog(context, stringItems, new OnOperItemClickL() {
+        FastDialog.ShowListDialog(context, stringItems, true,new OnOperItemClickL() {
             @Override
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
                 T.showShort(context, stringItems[position]);
@@ -91,7 +91,7 @@ public class MyDialogFragment extends BaseFragment{
     @OnClick(R.id.actionSheetDialog)
     public void actionSheetDialog(View v){
         final String[] stringItems = {"版本更新", "帮助与反馈", "退出QQ"};
-        FastDialog.ShowActionSheetDialog(context, stringItems, new OnOperItemClickL() {
+        FastDialog.ShowActionSheetDialog(context, stringItems, true,new OnOperItemClickL() {
             @Override
             public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
                 T.showShort(context, stringItems[position]);
