@@ -64,7 +64,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 	boolean isCancel = false;// 是否取消录制
 
 	boolean isPreview = false;// 摄像头是否预览
-	double currentTime = 0;
+	int currentTime = 0;
 	int actualVideoHeight = 0;
 	int actualVideoWidth = 0;
 
@@ -152,14 +152,14 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 			case 0:
 				// btn_VideoStop.performClick();
 				if (isRecording == true) {
-					currentTime=currentTime+0.1;
+					currentTime=currentTime+1;
 					if (currentTime <= maxTime) {
 						int index = (int) ((double) currentTime / (double) maxTime * 100);
 						progressBar.setProgress(index);
 
-						txtTimer.setText((maxTime - (int)currentTime) + "");
+						txtTimer.setText((maxTime - currentTime) + "");
 
-						sendEmptyMessageDelayed(0, 100);
+						sendEmptyMessageDelayed(0, 1000);
 					}
 				}
 
@@ -311,7 +311,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 			// Toast.makeText(MainActivity.this,
 			// "开始录像",Toast.LENGTH_SHORT).show();
 
-			mHandler.sendEmptyMessageDelayed(0, 100);
+			mHandler.sendEmptyMessageDelayed(0, 1000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
