@@ -256,4 +256,13 @@ public class LogUtils {
         return Thread.currentThread().getStackTrace()[4];
     }
 
+    public static void setFlag(boolean flag){
+        allowD = flag;
+        allowE = flag;
+        allowI = flag;
+        allowV = flag;
+        allowW = flag;
+        allowWtf = flag;
+    }
+
 }

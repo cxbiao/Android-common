@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -176,24 +177,22 @@ public class ImageUtils {
 
     }
 
-    /**
-     * convert Drawable to Bitmap
-     *
-     * @param d
-     * @return
-     */
-    public static Bitmap drawableToBitmap(Drawable d) {
-        return d == null ? null : ((BitmapDrawable) d).getBitmap();
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
-    /**
-     * convert Bitmap to Drawable
-     *
-     * @param b
-     * @return
-     */
-    public static Drawable bitmapToDrawable(Bitmap b) {
-        return b == null ? null : new BitmapDrawable(b);
+
+    public static Drawable bitmapToDrawable(Bitmap bmp) {
+        return bmp == null ? null : new BitmapDrawable(bmp);
     }
 
     /**

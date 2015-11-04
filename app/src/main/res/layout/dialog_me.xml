@@ -13,48 +13,56 @@
         android:onClick="baseDialog"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/tipDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="提示对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/listDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="列表对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/actionSheetDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ActionSheet对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/bottomDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="自定义底部对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/bottomNoAnimDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="自定义无动画底部对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/topDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="自定义顶部对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/topNoAnimDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="自定义无动画顶部对话框"
         />
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/centerDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

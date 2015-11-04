@@ -1,6 +1,7 @@
 package com.bryan.commondemo;
 
 import com.bryan.commondemo.ui.ErrorActivity;
+import com.bryan.lib.log.LogUtils;
 import com.bryan.lib.ui.BaseApplication;
 import com.bryan.lib.util.CrashHolder;
 
@@ -13,6 +14,7 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         CrashHolder.getInstance().install(this).setErrorActivityClass(ErrorActivity.class);
+        LogUtils.setFlag(BuildConfig.DEBUG);
 
     }
 }

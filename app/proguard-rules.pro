@@ -59,11 +59,11 @@ public static final android.os.Parcelable$Creator *;
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
-
+#注解不混淆
 -keep class * extends java.lang.annotation.Annotation { *; }
 
 -dontwarn okio.**
-#声明第三方jar包,不用管第三方jar包中的.so文件(如果有)
+#第三方jar包一般不用混淆,不用管第三方jar包中的.so文件(如果有)
 #-libraryjars libs/crypto.jar
 #不混淆第三方jar包中的类
 #-keep class com.nostra13.universalimageloader.** {*;}
