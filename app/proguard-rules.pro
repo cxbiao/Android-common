@@ -61,8 +61,11 @@ public static final android.os.Parcelable$Creator *;
 }
 #注解不混淆
 -keep class * extends java.lang.annotation.Annotation { *; }
-
+#不混淆model
+-keep class com.bryan.commondemo.model.** { *; }
 -dontwarn okio.**
+#不优化泛型和反射
+#-keepattributes Signature
 #第三方jar包一般不用混淆,不用管第三方jar包中的.so文件(如果有)
 #-libraryjars libs/crypto.jar
 #不混淆第三方jar包中的类

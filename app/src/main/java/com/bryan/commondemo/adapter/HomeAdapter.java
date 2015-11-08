@@ -3,7 +3,7 @@ package com.bryan.commondemo.adapter;
 import android.content.Context;
 
 import com.bryan.commondemo.R;
-import com.bryan.commondemo.domain.ItemInfo;
+import com.bryan.commondemo.model.ItemInfo;
 import com.bryan.lib.adapter.recyclerview.BaseAdapterHelper;
 import com.bryan.lib.adapter.recyclerview.BaseQuickAdapter;
 

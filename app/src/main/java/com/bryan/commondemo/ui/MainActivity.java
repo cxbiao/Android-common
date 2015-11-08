@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.bryan.commondemo.R;
 import com.bryan.commondemo.adapter.HomeAdapter;
-import com.bryan.commondemo.domain.ItemInfo;
+import com.bryan.commondemo.model.ItemInfo;
 import com.bryan.lib.adapter.recyclerview.BaseQuickAdapter;
 import com.bryan.lib.ui.BaseActivity;
 

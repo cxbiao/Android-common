@@ -1,4 +1,4 @@
-package com.bryan.commondemo.domain;
+package com.bryan.commondemo.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

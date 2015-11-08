@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.bryan.commondemo.R;
-import com.bryan.commondemo.domain.ItemInfo;
+import com.bryan.commondemo.model.ItemInfo;
 import com.bryan.lib.ui.BaseActivity;
 
 /**
