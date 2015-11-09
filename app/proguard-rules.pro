@@ -4,11 +4,12 @@
 -dontpreverify
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod,JavascriptInterface
 
 #忽略警告 也可以用-ignorewarnings
 -dontwarn
 
-
+# 保持哪些类不被混淆
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
@@ -59,16 +60,42 @@ public static final android.os.Parcelable$Creator *;
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+#不混淆本包的R
+#-keepclassmembers class com.bryan.commondemo.R$*{
+#    public static final int *;
+#}
+
+#不混淆所有R
+#-keepclassmembers class **.R$*{
+#    public static final int *;
+#}
+
 #注解不混淆
 -keep class * extends java.lang.annotation.Annotation { *; }
 #不混淆model
 -keep class com.bryan.commondemo.model.** { *; }
+
+#不混淆js接口 （有了NoProguard可以不用）
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+#不混淆注解保护的类
+-keep  @com.bryan.commondemo.model.NoProguard  class *{ *; }
+
 -dontwarn okio.**
-#不优化泛型和反射
-#-keepattributes Signature
-#第三方jar包一般不用混淆,不用管第三方jar包中的.so文件(如果有)
-#-libraryjars libs/crypto.jar
-#不混淆第三方jar包中的类
-#-keep class com.nostra13.universalimageloader.** {*;}
+
+
+#友盟
+-dontwarn com.umeng.**
+-keep class com.umeng.** { *; }
+-dontwarn u.aly.**
+-keep class u.aly.** { *; }
+-dontwarn com.tencent.**
+-keep  class com.tencent.** {*;}
+-dontwarn com.sina.sso.**
+-keep  class com.sina.sso.** {*;}
+
 
 
