@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bryan.lib.R;
-import com.bryan.lib.file.FileUtil;
+import com.bryan.lib.file.PathUtil;
 import com.bryan.lib.ui.BaseActivity;
 
 import java.io.File;
@@ -60,8 +60,7 @@ public class AudioActvity extends BaseActivity {
                         audioBtn.setText("松开结束");
 
                         if (RECODE_STATE != RECORD_ING) {
-                            FileUtil fileUtil = new FileUtil();
-                            audioName = fileUtil.GetAudioPath(AudioActvity.this) + "/" + fileUtil.GetAudioName();
+                            audioName = PathUtil.GetAudioPath(AudioActvity.this) + "/" + PathUtil.GetAudioName();
                             mr = new AudioRecorder(audioName);
                             RECODE_STATE = RECORD_ING;
 

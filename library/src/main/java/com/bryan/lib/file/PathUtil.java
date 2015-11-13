@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FileUtil {
+public class PathUtil {
 
 	private static final String APPNAME = "winstar";
 	private static final char HEX_DIGITS[] = { '0', '1', '2', '3', '4', '5',

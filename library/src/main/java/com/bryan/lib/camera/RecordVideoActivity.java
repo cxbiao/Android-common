@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.bryan.lib.R;
 import com.bryan.lib.dialog.FastDialog;
-import com.bryan.lib.file.FileUtil;
+import com.bryan.lib.file.PathUtil;
 import com.bryan.lib.ui.BaseActivity;
 import com.flyco.dialog.listener.OnBtnLeftClickL;
 import com.flyco.dialog.listener.OnBtnRightClickL;
@@ -109,7 +109,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 		});
 
 		if (file == null) {
-			String path = FileUtil.GetVideoPath(this)+"/"+ FileUtil.GetVideoName();
+			String path = PathUtil.GetVideoPath(this)+"/"+ PathUtil.GetVideoName();
 			file = new File(path);
 		}
 
