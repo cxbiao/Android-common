@@ -5,7 +5,6 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,56 +62,9 @@ public class FileUtils {
         return currentDataPath;
     }
 
-    /**
-     * @param fileName
-     * @param content
-     * @throws IOException
-     * @deprecated
-     */
-    public static void writeFileFromString(String fileName, String content) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName));
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-        bufferedOutputStream.write(content.getBytes());
-        bufferedOutputStream.flush();
-        bufferedOutputStream.close();
-        fileOutputStream.close();
-    }
 
-    /**
-     * @param fileName
-     * @param content
-     * @throws IOException
-     * @deprecated
-     */
-    public static void writeFileFromStringBuffers(String fileName, String content) throws IOException {
-        String s = new String();
-        String s1 = new String();
-        try {
-            File f = new File(fileName);
-            if (f.exists()) {
-                Log.d(TAG, "文件存在");
-            } else {
-            	Log.d(TAG, "文件不存在，正在创建...");
-                if (f.createNewFile()) {
-                	Log.d(TAG, "文件创建成功！");
-                } else {
-                	Log.d(TAG, "文件创建失败！");
-                }
-            }
-            BufferedReader input = new BufferedReader(new FileReader(f));
-            while ((s = input.readLine()) != null) {
-                s1 += s + "\n";
-            }
-            System.out.println("文件内容：" + s1);
-            input.close();
-            s1 += content;
-            BufferedWriter output = new BufferedWriter(new FileWriter(f));
-            output.write(s1);
-            output.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
+
 
 
     /**
@@ -346,7 +298,6 @@ public class FileUtils {
      * @param oldPath String
      * @param newPath String
      * @return boolean
-     * @deprecated Copy all the files in folder
      */
     public void copyFolder(String oldPath, String newPath) throws IOException {
 

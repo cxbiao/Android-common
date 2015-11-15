@@ -13,7 +13,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.bryan.lib.log.LogUtils;
+import com.bryan.lib.log.KLog;
 import com.bryan.lib.util.ShellUtils.CommandResult;
 import java.io.File;
 import java.util.List;
@@ -153,7 +153,7 @@ public class PackageUtils {
             return INSTALL_SUCCEEDED;
         }
 
-        LogUtils.e(
+        KLog.e(
                 new StringBuilder().append("installSilent successMsg:").append(commandResult.successMsg)
                         .append(", ErrorMsg:").append(commandResult.errorMsg).toString());
         if (commandResult.errorMsg == null) {
@@ -351,7 +351,7 @@ public class PackageUtils {
                 && (commandResult.successMsg.contains("Success") || commandResult.successMsg.contains("success"))) {
             return DELETE_SUCCEEDED;
         }
-        LogUtils.e(
+        KLog.e(
                 new StringBuilder().append("uninstallSilent successMsg:").append(commandResult.successMsg)
                         .append(", ErrorMsg:").append(commandResult.errorMsg).toString());
         if (commandResult.errorMsg == null) {
@@ -494,7 +494,7 @@ public class PackageUtils {
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                LogUtils.e( "pm get-install-location error");
+                KLog.e("pm get-install-location error");
             }
         }
         return APP_INSTALL_AUTO;

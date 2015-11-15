@@ -8,7 +8,7 @@ import android.os.Environment;
 import android.view.View;
 
 import com.bryan.commondemo.R;
-import com.bryan.lib.log.LogUtils;
+import com.bryan.lib.log.KLog;
 import com.bryan.lib.ui.BaseActivity;
 import com.bryan.lib.ui.widget.CropImageView;
 import com.bryan.lib.util.SystemIntentBuilder;
@@ -117,7 +117,7 @@ public class CropImageActivity extends BaseActivity {
             Uri uri = data.getData();
             String file = SystemIntentBuilder.getRealPath(this, uri);
             Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://"+file);
-            LogUtils.d(file);
+            KLog.d(file);
             mCropView.setImageBitmap(bitmap);
 
         }
