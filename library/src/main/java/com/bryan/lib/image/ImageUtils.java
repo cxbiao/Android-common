@@ -245,7 +245,7 @@ public class ImageUtils {
         if (width > reqWidth || height > reqHeight) {
             // 计算出实际宽度和目标宽度的比率
             int widthRatio = Math.round((float) width / (float) reqWidth);
-            int heightRatio = Math.round((float) width / (float) reqWidth);
+            int heightRatio = Math.round((float) height / (float) reqHeight);
             inSampleSize = Math.max(widthRatio, heightRatio);
         }
         return inSampleSize;
@@ -260,7 +260,7 @@ public class ImageUtils {
      * @param reqHeight
      * @return
      */
-    public Bitmap decodeSampledBitmapFromFile(String pathName,
+    public static  Bitmap decodeSampledBitmapFromFile(String pathName,
                                                    int reqWidth, int reqHeight) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();

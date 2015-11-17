@@ -8,11 +8,11 @@ import android.os.Environment;
 import android.view.View;
 
 import com.bryan.commondemo.R;
+import com.bryan.lib.image.ImageUtils;
 import com.bryan.lib.log.KLog;
 import com.bryan.lib.ui.BaseActivity;
 import com.bryan.lib.ui.widget.CropImageView;
 import com.bryan.lib.util.SystemIntentBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -114,9 +114,9 @@ public class CropImageActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICK_IMAGE) {
-            Uri uri = data.getData();
+            final Uri uri = data.getData();
             String file = SystemIntentBuilder.getRealPath(this, uri);
-            Bitmap bitmap = ImageLoader.getInstance().loadImageSync("file://"+file);
+            Bitmap bitmap=ImageUtils.loadImage(this, file);
             KLog.d(file);
             mCropView.setImageBitmap(bitmap);
 

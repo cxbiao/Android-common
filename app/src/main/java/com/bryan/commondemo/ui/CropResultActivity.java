@@ -1,12 +1,14 @@
 package com.bryan.commondemo.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.bryan.commondemo.R;
+import com.bryan.lib.image.ImageUtils;
 import com.bryan.lib.ui.BaseActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 
 public class CropResultActivity extends BaseActivity {
@@ -16,8 +18,16 @@ public class CropResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crop_result);
         Intent intent=getIntent();
-        String img=intent.getStringExtra("img");
-        ImageLoader.getInstance().displayImage("file://"+img, (ImageView) findViewById(R.id.result_image));
+        final String img=intent.getStringExtra("img");
+        final ImageView iv=(ImageView) findViewById(R.id.result_image);
+        iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Bitmap bitmap=ImageUtils.decodeSampledBitmapFromFile(img, iv.getWidth(), iv.getHeight());
+                iv.setImageBitmap(bitmap);
+                iv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
 
     }
 }
