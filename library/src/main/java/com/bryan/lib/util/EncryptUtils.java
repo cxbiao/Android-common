@@ -30,7 +30,7 @@ public class EncryptUtils {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(content.getBytes());
-            return getHashString(digest);
+            return getHex(digest.digest());
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -38,13 +38,13 @@ public class EncryptUtils {
         return null;
     }
 
-    private static String getHashString(MessageDigest digest) {
+    private static String getHex(byte[] bytes) {
         StringBuilder builder = new StringBuilder();
-        for (byte b : digest.digest()) {
+        for (byte b : bytes) {
             builder.append(Integer.toHexString((b >> 4) & 0xf));
             builder.append(Integer.toHexString(b & 0xf));
         }
-        return builder.toString();
+        return builder.toString().toUpperCase();
     }
 
 
