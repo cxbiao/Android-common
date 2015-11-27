@@ -22,12 +22,6 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TO do something with File,like read ,del etc.
- * User: cym
- * Date: 13-10-23
- * Time: 上午11:01
- */
 public class FileUtils {
 	private final static String TAG = "FileUtils";
     public static String readFilesToString(String fileName) throws IOException {

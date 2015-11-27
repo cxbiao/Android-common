@@ -1,15 +1,3 @@
-/**
- * ImageUtils.java
- * com.android.wollar.util
- * <p/>
- * Function： TODO
- * <p/>
- * ver     date      		author
- * ──────────────────────────────────
- * 2012-12-19 		Administrator
- * <p/>
- * Copyright (c) 2012, TNT All Rights Reserved.
- */
 
 package com.bryan.lib.image;
 

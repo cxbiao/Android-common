@@ -61,6 +61,12 @@ public static final android.os.Parcelable$Creator *;
     @butterknife.* <methods>;
 }
 
+#eventbus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+    void onEvent*(**);
+}
+
 #不混淆本包的R
 #-keepclassmembers class com.bryan.commondemo.R$*{
 #    public static final int *;
