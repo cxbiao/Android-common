@@ -31,7 +31,7 @@ public  class SingleFragmentActivity extends BaseActivity {
         Intent intent=getIntent();
        ItemInfo itemInfo= intent.getParcelableExtra("iteminfo");
         try {
-            Class clazz=Class.forName(itemInfo.getFragmentName());
+            Class clazz=Class.forName(itemInfo.fragmentName);
             fragment= (Fragment) clazz.newInstance();
         } catch (Exception e) {
             e.printStackTrace();

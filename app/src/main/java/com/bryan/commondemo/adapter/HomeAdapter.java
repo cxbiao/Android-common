@@ -21,7 +21,7 @@ public class HomeAdapter extends BaseQuickAdapter<ItemInfo>{
 
     @Override
     public void convert(BaseAdapterHelper helper, ItemInfo item) {
-        helper.getTextView(R.id.info).setText(item.getInfo());
+        helper.getTextView(R.id.info).setText(item.info);
 
     }
 }

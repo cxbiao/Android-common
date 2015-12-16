@@ -48,8 +48,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 try {
-                    if(mDatas.get(position).isActivity()==1){
-                        Class clazz=Class.forName(mDatas.get(position).getActivityName());
+                    if(mDatas.get(position).isActivity){
+                        Class clazz=Class.forName(mDatas.get(position).activityName);
                         Intent intent=new Intent(MainActivity.this,clazz);
                         startActivity(intent);
 
@@ -73,25 +73,25 @@ public class MainActivity extends BaseActivity {
 
     private void initDatas() {
         ItemInfo itemInfo1=new ItemInfo();
-        itemInfo1.setInfo("图像裁剪");
-        itemInfo1.setIsActivity(1);
-        itemInfo1.setActivityName("com.bryan.commondemo.ui.CropImageActivity");
+        itemInfo1.info="图像裁剪";
+        itemInfo1.isActivity=true;
+        itemInfo1.activityName="com.bryan.commondemo.ui.CropImageActivity";
         mDatas.add(itemInfo1);
 
         ItemInfo itemInfo2=new ItemInfo();
-        itemInfo2.setInfo("各类对话框");
-        itemInfo2.setFragmentName("com.bryan.commondemo.ui.fragment.MyDialogFragment");
+        itemInfo2.info="各类对话框";
+        itemInfo2.fragmentName="com.bryan.commondemo.ui.fragment.MyDialogFragment";
         mDatas.add(itemInfo2);
 
         ItemInfo itemInfo3=new ItemInfo();
-        itemInfo3.setInfo("wheelview实例");
-        itemInfo3.setFragmentName("com.bryan.commondemo.ui.fragment.WheelViewFragment");
+        itemInfo3.info="wheelview实例";
+        itemInfo3.fragmentName="com.bryan.commondemo.ui.fragment.WheelViewFragment";
         mDatas.add(itemInfo3);
 
 
         ItemInfo itemInfo4=new ItemInfo();
-        itemInfo4.setInfo("多媒体");
-        itemInfo4.setFragmentName("com.bryan.commondemo.ui.fragment.MediaFragment");
+        itemInfo4.info="多媒体";
+        itemInfo4.fragmentName="com.bryan.commondemo.ui.fragment.MediaFragment";
         mDatas.add(itemInfo4);
     }
 
