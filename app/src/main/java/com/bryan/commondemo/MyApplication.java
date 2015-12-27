@@ -1,6 +1,6 @@
 package com.bryan.commondemo;
 
-import com.bryan.commondemo.ui.ErrorActivity;
+import com.bryan.commondemo.activity.ErrorActivity;
 import com.bryan.lib.log.KLog;
 import com.bryan.lib.ui.BaseApplication;
 import com.bryan.lib.util.CrashHolder;

@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui.fragment;
+package com.bryan.commondemo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

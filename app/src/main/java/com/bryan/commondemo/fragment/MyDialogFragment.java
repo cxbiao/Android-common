@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui.fragment;
+package com.bryan.commondemo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.bryan.commondemo.R;
-import com.bryan.commondemo.ui.dialog.ShareBottomDialog;
-import com.bryan.commondemo.ui.dialog.ShareTopDialog;
+import com.bryan.commondemo.widget.ShareBottomDialog;
+import com.bryan.commondemo.widget.ShareTopDialog;
 import com.bryan.lib.dialog.FastDialog;
 import com.bryan.lib.util.T;
 import com.flyco.animation.BaseAnimatorSet;

@@ -18,4 +18,12 @@
         android:text="音频录制"
         />
 
+    <Button
+        android:layout_marginTop="10dp"
+        android:id="@+id/autoRecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="录音机"
+        />
+
 </LinearLayout>

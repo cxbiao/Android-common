@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui.dialog;
+package com.bryan.commondemo.widget;
 
 import android.content.Context;
 import android.view.View;

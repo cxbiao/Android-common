@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui;
+package com.bryan.commondemo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -75,23 +75,23 @@ public class MainActivity extends BaseActivity {
         ItemInfo itemInfo1=new ItemInfo();
         itemInfo1.info="图像裁剪";
         itemInfo1.isActivity=true;
-        itemInfo1.activityName="com.bryan.commondemo.ui.CropImageActivity";
+        itemInfo1.activityName="com.bryan.commondemo.activity.CropImageActivity";
         mDatas.add(itemInfo1);
 
         ItemInfo itemInfo2=new ItemInfo();
         itemInfo2.info="各类对话框";
-        itemInfo2.fragmentName="com.bryan.commondemo.ui.fragment.MyDialogFragment";
+        itemInfo2.fragmentName="com.bryan.commondemo.fragment.MyDialogFragment";
         mDatas.add(itemInfo2);
 
         ItemInfo itemInfo3=new ItemInfo();
         itemInfo3.info="wheelview实例";
-        itemInfo3.fragmentName="com.bryan.commondemo.ui.fragment.WheelViewFragment";
+        itemInfo3.fragmentName="com.bryan.commondemo.fragment.WheelViewFragment";
         mDatas.add(itemInfo3);
 
 
         ItemInfo itemInfo4=new ItemInfo();
         itemInfo4.info="多媒体";
-        itemInfo4.fragmentName="com.bryan.commondemo.ui.fragment.MediaFragment";
+        itemInfo4.fragmentName="com.bryan.commondemo.fragment.MediaFragment";
         mDatas.add(itemInfo4);
     }
 

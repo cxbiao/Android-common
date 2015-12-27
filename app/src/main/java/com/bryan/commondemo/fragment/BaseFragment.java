@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui.fragment;
+package com.bryan.commondemo.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;

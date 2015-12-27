@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui;
+package com.bryan.commondemo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

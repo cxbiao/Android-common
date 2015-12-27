@@ -12,22 +12,21 @@
  *
  */
 
-package com.bryan.lib.audio;
+package com.bryan.commondemo.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bryan.lib.R;
+import com.bryan.commondemo.R;
+import com.bryan.lib.audio.VoiceRecorder;
 import com.bryan.lib.file.PathUtil;
 import com.bryan.lib.ui.BaseActivity;
 
@@ -36,11 +35,9 @@ import java.io.File;
 /**
  * Created by bryan on 2015-10-18.
  */
-public class AudioActvity extends BaseActivity {
+public class AutoAudioActivity extends BaseActivity {
 
-    Button audioBtn;
-    private String TAG = "AudioActvity";
-    private AudioRecorder mr; // 录音
+    private VoiceRecorder mr; // 录音
     private Thread recordThread; // 录音线程
 
     private static int MAX_TIME = 0; // 最长录制时间，单位秒，0为无时间限制
@@ -63,51 +60,8 @@ public class AudioActvity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_audio);
-        audioBtn = (Button) findViewById(R.id.audio);
-        audioBtn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        setContentView(R.layout.activity_auto_audio);
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        audioBtn.setText("松开结束");
-
-                        if (RECODE_STATE != RECORD_ING) {
-                            audioName = PathUtil.GetAudioPath(AudioActvity.this) + "/" + PathUtil.GetAudioName();
-                            mr = new AudioRecorder(audioName);
-                            RECODE_STATE = RECORD_ING;
-
-                            mr.start();
-                            mythread();
-                        }
-
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        audioBtn.setText("按住开始");
-                        if (RECODE_STATE == RECORD_ING) {
-                            tips.setVisibility(View.GONE);
-                            mr.stop();
-                            voiceValue = 0.0;
-
-                            if (recodeTime < MIX_TIME) {
-                                // 时间太短
-                                Toast.makeText(getBaseContext(), "录音时间太短", Toast.LENGTH_SHORT).show();
-                                RECODE_STATE = RECORD_NO;
-                                File file = new File(audioName);
-                                file.delete();
-                            } else {
-                                Toast.makeText(getBaseContext(), audioName + "录音成功", Toast.LENGTH_SHORT).show();
-                            }
-                            RECODE_STATE = RECODE_ED;
-
-                        }
-
-                        break;
-                }
-                return false;
-            }
-        });
       tips= View.inflate(this, R.layout.activity_audio_tips, null);
       dialog_img=(ImageView) tips.findViewById(R.id.dialog_img);
       tips.setVisibility(View.GONE);
@@ -120,20 +74,51 @@ public class AudioActvity extends BaseActivity {
 
 
 
+   public void audiostart(View v){
+       if (RECODE_STATE != RECORD_ING) {
+           audioName = PathUtil.GetAudioPath(AutoAudioActivity.this) + "/" + PathUtil.GetAudioName();
+           mr = new VoiceRecorder(audioName);
+           RECODE_STATE = RECORD_ING;
+
+           mr.start();
+           mythread();
+       }
+   }
 
 
+    public void audiostop(View v){
+        if (RECODE_STATE == RECORD_ING) {
+            tips.setVisibility(View.GONE);
+            mr.stop();
+            voiceValue = 0.0;
+
+            if (recodeTime < MIX_TIME) {
+                // 时间太短
+                Toast.makeText(getBaseContext(), "录音时间太短", Toast.LENGTH_SHORT).show();
+                RECODE_STATE = RECORD_NO;
+                File file = new File(audioName);
+                file.delete();
+            } else {
+                Toast.makeText(getBaseContext(), audioName + "录音成功", Toast.LENGTH_SHORT).show();
+            }
+            RECODE_STATE = RECODE_ED;
+
+        }
+    }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode== KeyEvent.KEYCODE_BACK){
             if (RECODE_STATE == RECORD_ING){
-                Toast.makeText(getBaseContext(), "正在录音,不能退出!", Toast.LENGTH_SHORT).show();
-                return true;
+                tips.setVisibility(View.GONE);
+                 mr.stop();
+                RECODE_STATE = RECORD_NO;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
     /**
      * 录音计时线程

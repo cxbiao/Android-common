@@ -16,13 +16,13 @@ package com.bryan.lib.audio;
 
 import android.media.MediaRecorder;
 
-public class AudioRecorder {
+public class VoiceRecorder {
 	private static int SAMPLE_RATE_IN_HZ = 8000; 
 
 	final MediaRecorder recorder = new MediaRecorder();
 	final String path;
 
-	public AudioRecorder(String path){
+	public VoiceRecorder(String path){
 		this.path = path;
 	}
 
@@ -34,7 +34,9 @@ public class AudioRecorder {
 			recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 			recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
 			recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+			recorder.setAudioChannels(1);
 			recorder.setAudioSamplingRate(SAMPLE_RATE_IN_HZ);
+			recorder.setAudioEncodingBitRate(64);
 			recorder.setOutputFile(path);
 			recorder.prepare();
 			recorder.start();
@@ -48,8 +50,10 @@ public class AudioRecorder {
 
 	public boolean stop() {
 		try{
-			recorder.stop();
-			recorder.release();
+			if(recorder!=null){
+				recorder.stop();
+				recorder.release();
+			}
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -60,8 +64,8 @@ public class AudioRecorder {
 	
 	public double getAmplitude() {		
 		if (recorder != null){			
-			return  (recorder.getMaxAmplitude());		
-			}		
+			return  recorder.getMaxAmplitude();
+		}
 		else			
 			return 0;	
 		}

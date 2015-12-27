@@ -1,4 +1,4 @@
-package com.bryan.commondemo.ui.fragment;
+package com.bryan.commondemo.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.bryan.commondemo.R;
-import com.bryan.lib.audio.AudioActvity;
+import com.bryan.commondemo.activity.AutoAudioActivity;
+import com.bryan.lib.audio.AudioActivity;
 import com.bryan.lib.camera.RecordVideoActivity;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -37,7 +40,14 @@ public class MediaFragment extends BaseFragment {
 
     @OnClick(R.id.audioRecord)
     public void audioRecord(View v){
-        Intent intent=new Intent(context, AudioActvity.class);
+        Intent intent=new Intent(context, AudioActivity.class);
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.autoRecord)
+    public void autoRecord(View v){
+        Intent intent=new Intent(context, AutoAudioActivity.class);
         startActivity(intent);
     }
 
