@@ -3,6 +3,7 @@ package com.bryan.lib.util;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -56,6 +57,13 @@ public class TelephoneUtils {
         return IMEI;
     }
 
+
+    /** ANDROID_ID   一般是没有SIM卡用*/
+    public static String getAndroidID(Context context) {
+        String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.i(TAG, " android_id：" + android_id);
+        return android_id;
+    }
 
     /** wifi mac地址 */
     public static String getMacAddress(Context context) {
