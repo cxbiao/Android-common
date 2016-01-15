@@ -34,7 +34,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.alibaba:fastjson:1.1.46.android'
-    compile 'commons-io:commons-io:1.3.2'
     compile 'de.greenrobot:greendao:2.0.0'
     compile files('libs/FlyDialog-1.0.jar')
 }
