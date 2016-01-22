@@ -366,9 +366,10 @@ public class AppUtils {
 	 */
 	public static boolean isAppRunningForeground(Context context)
 	{
-		ActivityManager localActivityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-		List localList = localActivityManager.getRunningTasks(1);
-		return context.getPackageName().equalsIgnoreCase(((ActivityManager.RunningTaskInfo) localList.get(0)).baseActivity.getPackageName());
+		ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfos= activityManager.getRunningTasks(1);
+        ComponentName componentName=taskInfos.get(0).topActivity;
+        return context.getPackageName().equalsIgnoreCase(componentName.getPackageName());
 	}
 
 	public static String getTopActivityName(Context context)
