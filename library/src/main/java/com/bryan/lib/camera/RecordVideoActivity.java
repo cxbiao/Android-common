@@ -423,7 +423,7 @@ public class RecordVideoActivity extends BaseActivity implements OnTouchListener
 
 		if (action.equals(Recording_Finish)) {
 
-			FastDialog.ShowNormalDialog(this, "提示,", "视频文件大小为" + formatCacheSize(file.length()) + ",确定要发送吗?",false, new OnBtnLeftClickL() {
+			FastDialog.ShowNormalDialog(this, "提示,", "视频文件大小为" + formatCacheSize(file.length()) + ",确定要发送吗?",new OnBtnLeftClickL() {
 				@Override
 				public void onBtnLeftClick() {
 					Intent intent = new Intent();
