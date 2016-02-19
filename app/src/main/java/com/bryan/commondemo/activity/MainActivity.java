@@ -72,6 +72,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initDatas() {
+
+        ItemInfo itemInfo0=new ItemInfo();
+        itemInfo0.info="广告图";
+        itemInfo0.fragmentName="com.bryan.commondemo.fragment.AdvFragment";
+        mDatas.add(itemInfo0);
+
+
         ItemInfo itemInfo1=new ItemInfo();
         itemInfo1.info="图像裁剪";
         itemInfo1.isActivity=true;

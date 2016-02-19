@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,268 +22,7 @@ import java.util.List;
  * @author cxb
  * 时间:2015年6月5日
  * 类型:RollViewPager
- * <p/>
- * 用法
- * protected void setViewPages(final List<Advertisement> advList) {
- * for (int i = 0; i <advList.size(); i++) {
- * // 添加指示点
- * ImageView point = new ImageView(mActivity);
- * LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
- * LinearLayout.LayoutParams.WRAP_CONTENT,
- * LinearLayout.LayoutParams.WRAP_CONTENT);
- * <p/>
- * params.rightMargin = 10;
- * point.setLayoutParams(params);
- * point.setBackgroundResource(R.drawable.point_bg);
- * pointGroup.addView(point);
- * }
- * <p/>
- * if(advList.size()<=1){
- * pointGroup.setVisibility(View.GONE);
- * }
- * List<ImageView> imgList=new ArrayList<ImageView>();
- * for(int i=0;i<advList.size();i++){
- * Advertisement adv=advList.get(i);
- * final ImageView img=new ImageView(mActivity);
- * img.setScaleType(ScaleType.CENTER_CROP);
- * ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
- * @Override public void onLoadingComplete(String imageUri, View view,
- * Bitmap loadedImage) {
- * if (loadedImage != null) {
- * BitmapDrawable drawable = new BitmapDrawable(loadedImage);
- * img.setBackgroundDrawable(drawable);
- * img.setImageBitmap(null);
- * } else {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * }
- * @Override public void onLoadingFailed(String imageUri, View view,
- * FailReason failReason) {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * <p/>
- * });
- * imgList.add(img);
- * }
- * <p/>
- * if(advList.size()==2){
- * <p/>
- * for(int i=0;i<2;i++){
- * Advertisement adv=advList.get(i);
- * final ImageView img=new ImageView(mActivity);
- * img.setScaleType(ScaleType.CENTER_CROP);
- * ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
- * @Override public void onLoadingComplete(String imageUri, View view,
- * Bitmap loadedImage) {
- * if (loadedImage != null) {
- * BitmapDrawable drawable = new BitmapDrawable(loadedImage);
- * img.setBackgroundDrawable(drawable);
- * img.setImageBitmap(null);
- * } else {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * }
- * @Override public void onLoadingFailed(String imageUri, View view,
- * FailReason failReason) {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * <p/>
- * });
- * imgList.add(img);
- * }
- * <p/>
- * }
- * viewPager.setImgList(imgList);
- * viewPager.setPointGroup(pointGroup);
- * viewPager.startRoll();
- * <p/>
- * <p/>
- * <p/>
- * viewPager.setClickListener(new OnViewClickListener() {
- * @Override public void viewClickListener(int pos) {
- * CommomUtils.goToPages(advList.get(pos), mActivity);
- * }
- * });
- * <p/>
- * isPrepared=true;
- * <p/>
- * }
- * <p/>
- * protected void setViewPages(final List<Advertisement> advList) {
- * for (int i = 0; i <advList.size(); i++) {
- * // 添加指示点
- * ImageView point = new ImageView(mActivity);
- * LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
- * LinearLayout.LayoutParams.WRAP_CONTENT,
- * LinearLayout.LayoutParams.WRAP_CONTENT);
- * <p/>
- * params.rightMargin = 10;
- * point.setLayoutParams(params);
- * point.setBackgroundResource(R.drawable.point_bg);
- * pointGroup.addView(point);
- * }
- * <p/>
- * if(advList.size()<=1){
- * pointGroup.setVisibility(View.GONE);
- * }
- * List<ImageView> imgList=new ArrayList<ImageView>();
- * for(int i=0;i<advList.size();i++){
- * Advertisement adv=advList.get(i);
- * final ImageView img=new ImageView(mActivity);
- * img.setScaleType(ScaleType.CENTER_CROP);
- * ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
- * @Override public void onLoadingComplete(String imageUri, View view,
- * Bitmap loadedImage) {
- * if (loadedImage != null) {
- * BitmapDrawable drawable = new BitmapDrawable(loadedImage);
- * img.setBackgroundDrawable(drawable);
- * img.setImageBitmap(null);
- * } else {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * }
- * @Override public void onLoadingFailed(String imageUri, View view,
- * FailReason failReason) {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * <p/>
- * });
- * imgList.add(img);
- * }
- * <p/>
- * if(advList.size()==2){
- * <p/>
- * for(int i=0;i<2;i++){
- * Advertisement adv=advList.get(i);
- * final ImageView img=new ImageView(mActivity);
- * img.setScaleType(ScaleType.CENTER_CROP);
- * ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
- * @Override public void onLoadingComplete(String imageUri, View view,
- * Bitmap loadedImage) {
- * if (loadedImage != null) {
- * BitmapDrawable drawable = new BitmapDrawable(loadedImage);
- * img.setBackgroundDrawable(drawable);
- * img.setImageBitmap(null);
- * } else {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * }
- * @Override public void onLoadingFailed(String imageUri, View view,
- * FailReason failReason) {
- * img.setBackgroundResource(R.drawable.ic_empty);
- * }
- * <p/>
- * });
- * imgList.add(img);
- * }
- * <p/>
- * }
- * viewPager.setImgList(imgList);
- * viewPager.setPointGroup(pointGroup);
- * viewPager.startRoll();
- * <p/>
- * <p/>
- * <p/>
- * viewPager.setClickListener(new OnViewClickListener() {
- * @Override public void viewClickListener(int pos) {
- * CommomUtils.goToPages(advList.get(pos), mActivity);
- * }
- * });
- * <p/>
- * isPrepared=true;
- * <p/>
- * }
- */
-/**
- * protected void setViewPages(final List<Advertisement> advList) {
- for (int i = 0; i <advList.size(); i++) {
- // 添加指示点
- ImageView point = new ImageView(mActivity);
- LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
- LinearLayout.LayoutParams.WRAP_CONTENT,
- LinearLayout.LayoutParams.WRAP_CONTENT);
-
- params.rightMargin = 10;
- point.setLayoutParams(params);
- point.setBackgroundResource(R.drawable.point_bg);
- pointGroup.addView(point);
- }
-
- if(advList.size()<=1){
- pointGroup.setVisibility(View.GONE);
- }
- List<ImageView> imgList=new ArrayList<ImageView>();
- for(int i=0;i<advList.size();i++){
- Advertisement adv=advList.get(i);
- final ImageView img=new ImageView(mActivity);
- img.setScaleType(ScaleType.CENTER_CROP);
- ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
-
-@Override public void onLoadingComplete(String imageUri, View view,
-Bitmap loadedImage) {
-if (loadedImage != null) {
-BitmapDrawable drawable = new BitmapDrawable(loadedImage);
-img.setBackgroundDrawable(drawable);
-img.setImageBitmap(null);
-} else {
-img.setBackgroundResource(R.drawable.ic_empty);
-}
-}
-
-@Override public void onLoadingFailed(String imageUri, View view,
-FailReason failReason) {
-img.setBackgroundResource(R.drawable.ic_empty);
-}
-
-});
- imgList.add(img);
- }
-
- if(advList.size()==2){
-
- for(int i=0;i<2;i++){
- Advertisement adv=advList.get(i);
- final ImageView img=new ImageView(mActivity);
- img.setScaleType(ScaleType.CENTER_CROP);
- ImageLoader.getInstance().displayImage(adv.getImg(), img,ImageLoaderHelper.getDisplayImageOptions(R.drawable.ic_empty),new SimpleImageLoadingListener(){
-
-@Override public void onLoadingComplete(String imageUri, View view,
-Bitmap loadedImage) {
-if (loadedImage != null) {
-BitmapDrawable drawable = new BitmapDrawable(loadedImage);
-img.setBackgroundDrawable(drawable);
-img.setImageBitmap(null);
-} else {
-img.setBackgroundResource(R.drawable.ic_empty);
-}
-}
-
-@Override public void onLoadingFailed(String imageUri, View view,
-FailReason failReason) {
-img.setBackgroundResource(R.drawable.ic_empty);
-}
-
-});
- imgList.add(img);
- }
-
- }
- viewPager.setImgList(imgList);
- viewPager.setPointGroup(pointGroup);
- viewPager.startRoll();
-
-
-
- viewPager.setClickListener(new OnViewClickListener() {
-
-@Override public void viewClickListener(int pos) {
-CommomUtils.goToPages(advList.get(pos), mActivity);
-}
-});
-
- isPrepared=true;
-
- }
+ *
  */
 
 /**
@@ -324,8 +64,8 @@ public class RollViewPager extends ViewPager {
                     return;
                 }
                 index %= imgList.size();
-                pointGroup.getChildAt(index).setEnabled(false);
                 pointGroup.getChildAt(oldPosition).setEnabled(true);
+                pointGroup.getChildAt(index).setEnabled(false);
                 oldPosition = index;
                 //Log.e("TAG", "old:"+oldPosition);
             }
@@ -389,7 +129,7 @@ public class RollViewPager extends ViewPager {
     public void setImgList(List<ImageView> imgList) {
         this.imgList = imgList;
         if(imgList!=null){
-            TOTAL_BANNER_SIZE=2*imgList.size();
+            TOTAL_BANNER_SIZE=3*imgList.size();
         }
 
     }
@@ -397,7 +137,13 @@ public class RollViewPager extends ViewPager {
 
     public void setPointGroup(LinearLayout pointGroup) {
         this.pointGroup = pointGroup;
-        pointGroup.getChildAt(0).setEnabled(false);
+        if(pointGroup!=null){
+            pointGroup.getChildAt(0).setEnabled(false);
+        }
+        if(pointGroup!=null && pointGroup.getChildCount()<2){
+            pointGroup.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -445,6 +191,10 @@ public class RollViewPager extends ViewPager {
 
             final int index=position%imgList.size();
             ImageView view=imgList.get(index);
+            ViewParent vp=view.getParent();
+            if(vp!=null){
+                container.removeView(view);
+            }
             container.addView(view);
 
 
@@ -487,7 +237,7 @@ public class RollViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            //container.removeView((View) object);
         }
 
         @Override
