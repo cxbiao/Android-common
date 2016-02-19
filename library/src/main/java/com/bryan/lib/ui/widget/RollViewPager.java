@@ -6,10 +6,10 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -291,7 +291,8 @@ CommomUtils.goToPages(advList.get(pos), mActivity);
  */
 public class RollViewPager extends ViewPager {
 
-
+    private static final String TAG = "RollViewPager";
+    private  int TOTAL_BANNER_SIZE;
     private List<ImageView> imgList = new ArrayList<ImageView>();
     private LinearLayout pointGroup;
 
@@ -314,7 +315,7 @@ public class RollViewPager extends ViewPager {
     private void initView() {
 
 
-        this.setOnPageChangeListener(new OnPageChangeListener() {
+        this.addOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int index) {
@@ -322,11 +323,7 @@ public class RollViewPager extends ViewPager {
                 if (pointGroup == null || pointGroup.getChildCount() < 2) {
                     return;
                 }
-                if (imgList.size() > pointGroup.getChildCount()) {
-                    index %= pointGroup.getChildCount();
-                } else {
-                    index %= imgList.size();
-                }
+                index %= imgList.size();
                 pointGroup.getChildAt(index).setEnabled(false);
                 pointGroup.getChildAt(oldPosition).setEnabled(true);
                 oldPosition = index;
@@ -361,20 +358,22 @@ public class RollViewPager extends ViewPager {
         public void handleMessage(Message msg) {
 
             int pos = getCurrentItem() + 1;
-            setCurrentItem(pos, true);
+            if (pos == TOTAL_BANNER_SIZE - 1) {
+                setCurrentItem(imgList.size() - 1, false);
+            } else {
+                setCurrentItem(pos);
+            }
             //一直维护3秒跳跃一次的操作
             startRoll();
         }
 
-        ;
     };
-    private int downX;
-    private int downY;
+
     private OnViewClickListener clickListener;
 
     public interface OnViewClickListener {
         //业务逻辑对应操作
-        public void viewClickListener(int pos);
+        void viewClickListener(int pos);
     }
 
     //界面移除出界面时候调用的方法
@@ -385,11 +384,13 @@ public class RollViewPager extends ViewPager {
         super.onDetachedFromWindow();
     }
 
-    ;
 
 
     public void setImgList(List<ImageView> imgList) {
         this.imgList = imgList;
+        if(imgList!=null){
+            TOTAL_BANNER_SIZE=2*imgList.size();
+        }
 
     }
 
@@ -418,7 +419,7 @@ public class RollViewPager extends ViewPager {
         } else {
             myPagerAdapter.notifyDataSetChanged();
         }
-        if (imgList.size() > 2)
+        if (imgList.size() > 1)
             handler.sendEmptyMessageDelayed(0, 3000);
     }
 
@@ -430,11 +431,7 @@ public class RollViewPager extends ViewPager {
     class MyPagerAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-            if (imgList.size() < 3)
-                return imgList.size();
-            else {
-                return Integer.MAX_VALUE;
-            }
+           return TOTAL_BANNER_SIZE;
         }
 
         @Override
@@ -446,14 +443,8 @@ public class RollViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, final int position) {
 
 
-            int viewIndex=position%imgList.size();
-            ImageView view=imgList.get(viewIndex);
-            ViewParent vp = view.getParent();
-            if (vp != null) {
-                ViewGroup parent = (ViewGroup) vp;
-                parent.removeView(view);
-
-            }
+            final int index=position%imgList.size();
+            ImageView view=imgList.get(index);
             container.addView(view);
 
 
@@ -467,7 +458,7 @@ public class RollViewPager extends ViewPager {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             //手指点中，不能滑动，handler不去维护任务达到不去滑动的目的
-                            handler.removeCallbacksAndMessages(null);
+                            stopRoll();
                             downTime = System.currentTimeMillis();
                             downX = (int) event.getX();
                             break;
@@ -480,18 +471,11 @@ public class RollViewPager extends ViewPager {
                             long upTime = System.currentTimeMillis();
                             if (Math.abs(upX - downX)<20 && upTime - downTime < 500) {
                                 if (clickListener != null) {
-                                    int index = 0;
-                                    if (pointGroup != null && imgList.size() > pointGroup.getChildCount()) {
-                                        index = position % pointGroup.getChildCount();
-                                    } else {
-                                        index = position % imgList.size();
-                                    }
                                     clickListener.viewClickListener(index);
                                 }
                             }
                             break;
                         case MotionEvent.ACTION_CANCEL:
-
                             startRoll();
                             break;
                     }
@@ -503,7 +487,21 @@ public class RollViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-           // container.removeView((View) object);
+            container.removeView((View) object);
+        }
+
+        @Override
+        public void finishUpdate(ViewGroup container) {
+            int position = getCurrentItem();
+            Log.d(TAG, "finish update before, position=" + position);
+            if (position == 0) {
+                position = imgList.size();
+                setCurrentItem(position, false);
+            } else if (position == TOTAL_BANNER_SIZE - 1) {
+                position = imgList.size() - 1;
+                setCurrentItem(position, false);
+            }
+            Log.d(TAG, "finish update after, position=" + position);
         }
     }
 
