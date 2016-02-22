@@ -9,51 +9,44 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 /**
  * 自定义viewpager，实现图片轮播
- *
  * @author cxb
  * 时间:2015年6月5日
- * 类型:RollViewPager
- *
  */
 
-/**
- * 一张图和二张图的时候特殊处理
- * 二张图  1 2 1 2这样变成4张图
- */
-public class RollViewPager extends ViewPager {
 
-    private static final String TAG = "RollViewPager";
-    private  int TOTAL_BANNER_SIZE;
-    private List<ImageView> imgList = new ArrayList<ImageView>();
+public abstract  class BaseRollPager<T> extends ViewPager {
+
+    private static final String TAG = "BaseRollPager";
+    private  int TOTAL_PAGER_SIZE;
     private LinearLayout pointGroup;
-
+    protected List<T> list = new ArrayList<>();
     private MyPagerAdapter myPagerAdapter;
+    private boolean isAutoScrolling=true;
+    private int timeSpan=5000;
 
     //需要维护的页面指向的索引值
     private int oldPosition = 0;
 
-    public RollViewPager(Context context) {
+    public BaseRollPager(Context context) {
         super(context);
         initView();
     }
 
-    public RollViewPager(Context context, AttributeSet attrs) {
+    public BaseRollPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
 
     private void initView() {
-
 
         this.addOnPageChangeListener(new OnPageChangeListener() {
 
@@ -63,7 +56,7 @@ public class RollViewPager extends ViewPager {
                 if (pointGroup == null || pointGroup.getChildCount() < 2) {
                     return;
                 }
-                index %= imgList.size();
+                index %= list.size();
                 pointGroup.getChildAt(oldPosition).setEnabled(true);
                 pointGroup.getChildAt(index).setEnabled(false);
                 oldPosition = index;
@@ -85,7 +78,7 @@ public class RollViewPager extends ViewPager {
 
 
     //点所在的集合传递进去，由当前类单独管理
-    public RollViewPager(Context context, LinearLayout pointll, OnViewClickListener clickListener) {
+    public BaseRollPager(Context context, LinearLayout pointll, OnViewClickListener clickListener) {
         super(context);
         this.clickListener = clickListener;
         this.pointGroup = pointll;
@@ -93,18 +86,33 @@ public class RollViewPager extends ViewPager {
 
     }
 
+    public T setSource(List<T> list) {
+        this.list = list;
+        if(list!=null){
+             TOTAL_PAGER_SIZE=3*list.size();
+        }
+        return (T) this;
+    }
+
+    public void setTimeSpan(int timeSpan) {
+        this.timeSpan = timeSpan;
+    }
+
+    public void setIsAutoScrolling(boolean isAutoScrolling) {
+        this.isAutoScrolling = isAutoScrolling;
+    }
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
 
             int pos = getCurrentItem() + 1;
-            if (pos == TOTAL_BANNER_SIZE - 1) {
-                setCurrentItem(imgList.size() - 1, false);
+            if (pos == TOTAL_PAGER_SIZE - 1) {
+                setCurrentItem(list.size() - 1, false);
             } else {
                 setCurrentItem(pos);
             }
             //一直维护3秒跳跃一次的操作
-            startRoll();
+            goOnScroll();
         }
 
     };
@@ -120,19 +128,13 @@ public class RollViewPager extends ViewPager {
     protected void onDetachedFromWindow() {
         //取消handler中维护任务
         System.out.println("onDetachedFromWindow");
-        handler.removeCallbacksAndMessages(null);
+        pauseScroll();
         super.onDetachedFromWindow();
     }
 
 
 
-    public void setImgList(List<ImageView> imgList) {
-        this.imgList = imgList;
-        if(imgList!=null){
-            TOTAL_BANNER_SIZE=3*imgList.size();
-        }
 
-    }
 
 
     public void setPointGroup(LinearLayout pointGroup) {
@@ -154,7 +156,7 @@ public class RollViewPager extends ViewPager {
 
     public void startRoll() {
         //设置数据适配器
-        if (imgList == null || imgList.size() == 0) {
+        if (list==null || list.size()<=0) {
             return;
         }
         if (myPagerAdapter == null) {
@@ -165,19 +167,31 @@ public class RollViewPager extends ViewPager {
         } else {
             myPagerAdapter.notifyDataSetChanged();
         }
-        if (imgList.size() > 1)
-            handler.sendEmptyMessageDelayed(0, 3000);
+        goOnScroll();
     }
 
 
-    public void stopRoll() {
+    public void goOnScroll(){
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        if(!isAutoScrolling) return;
+        handler.sendEmptyMessageDelayed(0, timeSpan);
+    }
+
+    public void pauseScroll(){
         handler.removeCallbacksAndMessages(null);
     }
+
+
+    protected abstract View onCreateView(ViewGroup container, int position);
+
+
 
     class MyPagerAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-           return TOTAL_BANNER_SIZE;
+           return TOTAL_PAGER_SIZE;
         }
 
         @Override
@@ -189,12 +203,8 @@ public class RollViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, final int position) {
 
 
-            final int index=position%imgList.size();
-            ImageView view=imgList.get(index);
-            ViewParent vp=view.getParent();
-            if(vp!=null){
-                container.removeView(view);
-            }
+            final int index=position%list.size();
+            View view=onCreateView(container, index);
             container.addView(view);
 
 
@@ -208,25 +218,25 @@ public class RollViewPager extends ViewPager {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             //手指点中，不能滑动，handler不去维护任务达到不去滑动的目的
-                            stopRoll();
+                            pauseScroll();
                             downTime = System.currentTimeMillis();
                             downX = (int) event.getX();
                             break;
                         //如果有做滑动操作，最后view不会触发ACTION_UP操作，而会去触发ACTION_CANCEL
                         case MotionEvent.ACTION_UP:
 
-                            startRoll();
+                           goOnScroll();
                             int upX = (int) event.getX();
 
                             long upTime = System.currentTimeMillis();
-                            if (Math.abs(upX - downX)<20 && upTime - downTime < 500) {
+                            if (Math.abs(upX - downX)< ViewConfiguration.get(getContext()).getScaledTouchSlop() && upTime - downTime < 500) {
                                 if (clickListener != null) {
                                     clickListener.viewClickListener(index);
                                 }
                             }
                             break;
                         case MotionEvent.ACTION_CANCEL:
-                            startRoll();
+                            goOnScroll();
                             break;
                     }
                     return true;
@@ -237,7 +247,7 @@ public class RollViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            //container.removeView((View) object);
+            container.removeView((View) object);
         }
 
         @Override
@@ -245,13 +255,19 @@ public class RollViewPager extends ViewPager {
             int position = getCurrentItem();
             Log.d(TAG, "finish update before, position=" + position);
             if (position == 0) {
-                position = imgList.size();
+                position = list.size();
                 setCurrentItem(position, false);
-            } else if (position == TOTAL_BANNER_SIZE - 1) {
-                position = imgList.size() - 1;
+            } else if (position == TOTAL_PAGER_SIZE - 1) {
+                position = list.size() - 1;
                 setCurrentItem(position, false);
             }
             Log.d(TAG, "finish update after, position=" + position);
+        }
+
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 

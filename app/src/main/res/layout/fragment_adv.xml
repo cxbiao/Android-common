@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp">
 
-        <com.bryan.lib.ui.widget.RollViewPager
-            android:id="@+id/viewpager"
+        <com.bryan.commondemo.widget.AdvBanner
+            android:id="@+id/advBanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
