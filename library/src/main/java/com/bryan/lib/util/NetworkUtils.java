@@ -3,45 +3,41 @@ package com.bryan.lib.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import com.bryan.lib.log.KLog;
 
 public class NetworkUtils {
 	
 	private static final String TAG = "NetworkUtils";
 	public enum NetType {
-		None(1),
-		Mobile(2),
-		Wifi(4),
-		Other(8);
+		MOBILE(1),
+		MOBILE_2G(2),
+		MOBILE_3G(3),
+		MOBILE_4G(4),
+		WIFI(5),
+		UNKNOWN(6);
 		NetType(int value) {
 			this.value = value;
 		}
 		public int value;
 	}
 
-	
 	/**
 	 * 获取ConnectivityManager
 	 */
 	public static ConnectivityManager getConnManager(Context context) {
 		return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	}
-	
-	
-	
+
 	
 	/**
 	 * 检测网络是否为可用状态
 	 */
 	public static boolean isNetworkConnected(Context context) {
-		if (context != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-			if (mNetworkInfo != null) {
-				return mNetworkInfo.isAvailable();
-			}
-		}
-		return false;
+		NetworkInfo net = getConnManager(context).getActiveNetworkInfo();
+		return net != null && net.isAvailable();
 	}
 	
 	/**
@@ -59,36 +55,72 @@ public class NetworkUtils {
 		if (net != null) {
 			switch (net.getType()) {
 				case ConnectivityManager.TYPE_WIFI :
-					return NetType.Wifi;
+					return NetType.WIFI;
 				case ConnectivityManager.TYPE_MOBILE :
-					return NetType.Mobile;
+					return NetType.MOBILE;
 				default :
-					return NetType.Other;
+					return NetType.UNKNOWN;
 			}
 		}
-		return NetType.None;
-	}
-	
-	
-	/**
-	 * 是否存在有效的WIFI连接
-	 */
-	public static boolean isWifiConnected(Context context) {
-		NetworkInfo net = getConnManager(context).getActiveNetworkInfo();
-		return net != null && net.getType() == ConnectivityManager.TYPE_WIFI && net.isConnected();
+		return NetType.UNKNOWN;
 	}
 
-	/**
-	 * 是否存在有效的移动连接
-	 * @param context
-	 * @return boolean
-	 */
-	public static boolean isMobileConnected(Context context) {
-		NetworkInfo net = getConnManager(context).getActiveNetworkInfo();
-		return net != null && net.getType() == ConnectivityManager.TYPE_MOBILE && net.isConnected();
+
+	public static NetType getExactNetworkType(Context context) {
+		NetType type =NetType.UNKNOWN;
+
+		NetworkInfo networkInfo = getConnManager(context).getActiveNetworkInfo();
+		if (networkInfo != null && networkInfo.isAvailable()) {
+			if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+				type = NetType.WIFI;
+			} else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+				String typeName = networkInfo.getSubtypeName();
+
+				KLog.e("Network getSubtypeName : " + typeName);
+
+				int networkType = networkInfo.getSubtype();
+				switch (networkType) {
+					case TelephonyManager.NETWORK_TYPE_GPRS:
+					case 16:                                   //TelephonyManager.NETWORK_TYPE_GSM:
+					case TelephonyManager.NETWORK_TYPE_EDGE:
+					case TelephonyManager.NETWORK_TYPE_CDMA:
+					case TelephonyManager.NETWORK_TYPE_1xRTT:
+					case TelephonyManager.NETWORK_TYPE_IDEN:
+						type = NetType.MOBILE_2G;
+						break;
+					case TelephonyManager.NETWORK_TYPE_UMTS:
+					case TelephonyManager.NETWORK_TYPE_EVDO_0:
+					case TelephonyManager.NETWORK_TYPE_EVDO_A:
+					case TelephonyManager.NETWORK_TYPE_HSDPA:
+					case TelephonyManager.NETWORK_TYPE_HSUPA:
+					case TelephonyManager.NETWORK_TYPE_HSPA:
+					case TelephonyManager.NETWORK_TYPE_EVDO_B:
+					case TelephonyManager.NETWORK_TYPE_EHRPD:
+					case TelephonyManager.NETWORK_TYPE_HSPAP:
+					case 17:                                     //TelephonyManager.NETWORK_TYPE_TD_SCDMA
+						type = NetType.MOBILE_3G;
+						break;
+					case TelephonyManager.NETWORK_TYPE_LTE:
+					case 18:            //NETWORK_TYPE_IWLAN
+						type = NetType.MOBILE_4G;
+						break;
+					default:
+						// TD-SCDMA 中国移动 联通 电信 三种3G制式
+						if (typeName.equalsIgnoreCase("TD-SCDMA") || typeName.equalsIgnoreCase("WCDMA")
+								|| typeName.equalsIgnoreCase("CDMA2000")) {
+							type = NetType.MOBILE_3G;
+						}
+						break;
+				}
+
+				KLog.e("Network getSubtype : " + networkType);
+			}
+		}
+		KLog.e("Network Type : " + type);
+		return type;
 	}
 	
-	
+
 	
 	/**
 	 * 打印当前各种网络状态
