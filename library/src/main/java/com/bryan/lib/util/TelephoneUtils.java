@@ -41,28 +41,19 @@ public class TelephoneUtils {
         return IMSI;
     }
 
-    /**
-     * IMEI是International Mobile Equipment Identity （国际移动设备标识）的简称
-     * IMEI由15位数字组成的”电子串号”，它与每台手机一一对应，而且该码是全世界唯一的
-     * 其组成为：
-     * 1. 前6位数(TAC)是”型号核准号码”，一般代表机型
-     * 2. 接着的2位数(FAC)是”最后装配号”，一般代表产地
-     * 3. 之后的6位数(SNR)是”串号”，一般代表生产顺序号
-     * 4. 最后1位数(SP)通常是”0″，为检验码，目前暂备用
-     */
-    public static String getIMEI(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String IMEI = telephonyManager.getDeviceId();
-        Log.i(TAG, " IMEI：" + IMEI);
-        return IMEI;
-    }
 
+    public static String getDeviceIMEI(Context context) {
+        String deviceId;
+        if (isPhone(context)) {
+            TelephonyManager telephony = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            deviceId = telephony.getDeviceId();
+        } else {
+            deviceId = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
 
-    /** ANDROID_ID   一般是没有SIM卡用*/
-    public static String getAndroidID(Context context) {
-        String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.i(TAG, " android_id：" + android_id);
-        return android_id;
+        }
+        return deviceId;
     }
 
     /** wifi mac地址 */
@@ -73,6 +64,18 @@ public class TelephoneUtils {
         Log.i(TAG, " MAC：" + mac);
         return mac;
     }
+
+    /**判断当前设备是否为手机*/
+    public static boolean isPhone(Context context) {
+        TelephonyManager telephony = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Print telephone info.
      */
