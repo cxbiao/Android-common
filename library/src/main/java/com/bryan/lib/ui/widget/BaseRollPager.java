@@ -56,11 +56,12 @@ public abstract  class BaseRollPager<T> extends ViewPager {
                 if (pointGroup == null || pointGroup.getChildCount() < 2) {
                     return;
                 }
-                index %= list.size();
+                index--;
+               // Log.e(TAG, "index:"+index);
+                if(index<0 || index>list.size()-1) return;
                 pointGroup.getChildAt(oldPosition).setEnabled(true);
                 pointGroup.getChildAt(index).setEnabled(false);
                 oldPosition = index;
-                //Log.e("TAG", "old:"+oldPosition);
             }
 
             @Override
@@ -89,7 +90,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
     public T setSource(List<T> list) {
         this.list = list;
         if(list!=null){
-             TOTAL_PAGER_SIZE=3*list.size();
+             TOTAL_PAGER_SIZE=(list.size()==1)?1:list.size()+2;
         }
         return (T) this;
     }
@@ -107,7 +108,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
 
             int pos = getCurrentItem() + 1;
             if (pos == TOTAL_PAGER_SIZE - 1) {
-                setCurrentItem(list.size() - 1, false);
+                setCurrentItem(1, false);
             } else {
                 setCurrentItem(pos);
             }
@@ -167,12 +168,13 @@ public abstract  class BaseRollPager<T> extends ViewPager {
         } else {
             myPagerAdapter.notifyDataSetChanged();
         }
+        setCurrentItem(1,false);
         goOnScroll();
     }
 
 
     public void goOnScroll(){
-        if (list == null || list.size() == 0) {
+        if (list == null || list.size() <= 1) {
             return;
         }
         if(!isAutoScrolling) return;
@@ -202,11 +204,30 @@ public abstract  class BaseRollPager<T> extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
 
+           //在总数上多添加2张图片  [5,1,2,3,4,5,1]
+            View view;
+            if(list.size()==1){
+                view=onCreateView(container, 0);
+                container.addView(view);
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (clickListener != null) {
+                            clickListener.viewClickListener(0);
+                        }
+                    }
+                });
+                return view;
+            }
 
-            final int index=position%list.size();
-            View view=onCreateView(container, index);
+            if(position==0){
+                view=onCreateView(container, list.size()-1);
+            }else if(position==TOTAL_PAGER_SIZE-1){
+                view=onCreateView(container, 0);
+            }else {
+                view=onCreateView(container, position-1);
+            }
             container.addView(view);
-
 
             view.setOnTouchListener(new OnTouchListener() {
                 private int downX;
@@ -231,7 +252,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
                             long upTime = System.currentTimeMillis();
                             if (Math.abs(upX - downX)< ViewConfiguration.get(getContext()).getScaledTouchSlop() && upTime - downTime < 500) {
                                 if (clickListener != null) {
-                                    clickListener.viewClickListener(index);
+                                    clickListener.viewClickListener(position-1);
                                 }
                             }
                             break;
@@ -252,14 +273,14 @@ public abstract  class BaseRollPager<T> extends ViewPager {
 
         @Override
         public void finishUpdate(ViewGroup container) {
+            if(list.size()==1) return;
             int position = getCurrentItem();
             Log.d(TAG, "finish update before, position=" + position);
             if (position == 0) {
                 position = list.size();
                 setCurrentItem(position, false);
             } else if (position == TOTAL_PAGER_SIZE - 1) {
-                position = list.size() - 1;
-                setCurrentItem(position, false);
+                setCurrentItem(1, false);
             }
             Log.d(TAG, "finish update after, position=" + position);
         }
