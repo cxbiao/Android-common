@@ -1,7 +1,5 @@
 package com.bryan.lib.file;
 
-import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -39,33 +37,9 @@ public class FileUtils {
         return sb.toString();
     }
 
-    public static String getCurrentDataPath(Context context) throws IOException {
-
-        return getCurrentDataPath(context, "");
-    }
-
-    public static String getCurrentDataPath(Context context, String folderName) throws IOException {
-        String currentDataPath = "";
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
-            currentDataPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folderName;
-            createDir(currentDataPath);
-        } else {
-            currentDataPath = context.getFilesDir().getAbsolutePath();
-        }
-        return currentDataPath;
-    }
 
 
 
-
-
-
-    /**
-     * Create Folder
-     *
-     * @param fileName folder
-     */
     public static void createDir(String fileName) throws IOException {
         File dir = new File(fileName);
         Log.d(TAG, fileName + "    " + dir.exists());
@@ -73,43 +47,27 @@ public class FileUtils {
             dir.mkdir();
     }/** */
 
-    /**
-     * Create New File
-     *
-     * @param path     Folder Name
-     * @param fileName File Name
-     * @throws IOException
-     */
+
     public static void createFile(String path, String fileName) throws IOException {
         File file = new File(path + "/" + fileName);
         if (!file.exists())
             file.createNewFile();
-    }/** */
-    /**
-     * Delete File
-     *
-     * @param fileName
-     */
+    }
+
     public void delFile(String fileName) throws IOException {
         File file = new File(fileName);
         if (file.exists() && file.isFile())
             file.delete();
     }
 
-    /**
-     * Delete the File no matter it's a file or folder.If the file is a folder,this method
-     * will delete all the file in the folder.
-     *
-     * @param fileName
-     * @throws IOException
-     */
 
-    public static void deleteFileOrFolder(String fileName) throws IOException {
-        File f = new File(fileName);
+
+    public static void deleteFileOrFolder(String file) throws IOException {
+        File f = new File(file);
         if (f.isDirectory()) {
-            String[] list = f.list();
-            for (int i = 0; i < list.length; i++) {
-                deleteFileOrFolder(fileName + "//" + list[i]);
+            File[] flist =f.listFiles();
+            for(File temp:flist){
+                deleteFileOrFolder(temp.getAbsolutePath());
             }
         }
         f.delete();
@@ -756,25 +714,7 @@ public class FileUtils {
         return (filePosi >= extenPosi) ? "" : filePath.substring(extenPosi + 1);
     }
 
-    /**
-     * Creates the directory named by the trailing filename of this file, including the complete directory path required
-     * to create this directory. <br/>
-     * <br/>
-     * <ul>
-     * <strong>Attentions:</strong>
-     * <li>makeDirs("C:\\Users\\Trinea") can only create users folder</li>
-     * <li>makeFolder("C:\\Users\\Trinea\\") can create Trinea folder</li>
-     * </ul>
-     *
-     * @param filePath
-     * @return true if the necessary directories have been created or the target directory already exists, false one of
-     * the directories can not be created.
-     * <ul>
-     * <li>if {@link FileUtils#getFolderName(String)} return null, return false</li>
-     * <li>if target directory already exists, return true</li>
-     * <li>return {@link File#}</li>
-     * </ul>
-     */
+
     public static boolean makeDirs(String filePath) {
         String folderName = getFolderName(filePath);
 
@@ -786,21 +726,10 @@ public class FileUtils {
         return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
     }
 
-    /**
-     * @param filePath
-     * @return
-     * @see #makeDirs(String)
-     */
-    public static boolean makeFolders(String filePath) {
-        return makeDirs(filePath);
-    }
 
-    /**
-     * Indicates if this file represents a file on the underlying file system.
-     *
-     * @param filePath
-     * @return
-     */
+
+
+
     public static boolean isFileExist(String filePath) {
         if (TextUtils.isEmpty(filePath)) {
             return false;
@@ -810,74 +739,25 @@ public class FileUtils {
         return (file.exists() && file.isFile());
     }
 
-    /**
-     * Indicates if this file represents a directory on the underlying file system.
-     *
-     * @param directoryPath
-     * @return
-     */
-    public static boolean isFolderExist(String directoryPath) {
-        if (TextUtils.isEmpty(directoryPath)) {
-            return false;
-        }
 
-        File dire = new File(directoryPath);
-        return (dire.exists() && dire.isDirectory());
-    }
 
-    /**
-     * delete file or directory
-     * <ul>
-     * <li>if path is null or empty, return true</li>
-     * <li>if path not exist, return true</li>
-     * <li>if path exist, delete recursion. return true</li>
-     * <ul>
-     *
-     * @param path
-     * @return
-     */
-    public static boolean deleteFileFromPath(String path) {
-        if (TextUtils.isEmpty(path)) {
-            return true;
-        }
-
-        File file = new File(path);
-        if (!file.exists()) {
-            return true;
-        }
-        if (file.isFile()) {
-            return file.delete();
-        }
-        if (!file.isDirectory()) {
-            return false;
-        }
-        for (File f : file.listFiles()) {
-            if (f.isFile()) {
-                f.delete();
-            } else if (f.isDirectory()) {
-                deleteFileFromPath(f.getAbsolutePath());
+    // 取得文件夹大小
+    public static long getFileSize(File file) {
+        long size = 0;
+        if (file.exists() == false) {
+            size = 0;
+        } else {
+            File flist[] = file.listFiles();
+            for (int i = 0; i < flist.length; i++) {
+                if (flist[i].isDirectory()) {
+                    size = size + getFileSize(flist[i]);
+                } else {
+                    size = size + flist[i].length();
+                }
             }
         }
-        return file.delete();
-    }
 
-    /**
-     * get file size
-     * <ul>
-     * <li>if path is null or empty, return -1</li>
-     * <li>if path exist and it is a file, return file size, else return -1</li>
-     * <ul>
-     *
-     * @param path
-     * @return returns the length of this file in bytes. returns -1 if the file does not exist.
-     */
-    public static long getFileSize(String path) {
-        if (TextUtils.isEmpty(path)) {
-            return -1;
-        }
-
-        File file = new File(path);
-        return (file.exists() && file.isFile() ? file.length() : -1);
+        return size;
     }
 
 }
