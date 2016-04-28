@@ -379,8 +379,7 @@ public class AppUtils {
 		return taskInfos.get(0).topActivity.getClassName();
 	}
 
-	public static List<String> getRunningApps(Context context)
-	{
+	public static List<String> getRunningApps(Context context) {
 		ArrayList localArrayList = new ArrayList();
 		ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 		List<ActivityManager.RunningAppProcessInfo> appProcessInfos = activityManager.getRunningAppProcesses();
@@ -472,6 +471,20 @@ public class AppUtils {
 			}
 		}
 		return isRunning;
+	}
+
+	// int pid = android.os.Process.myPid();
+	private String getProcessName(Context context,int pID) {
+		String processName = null;
+		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningAppProcessInfo> listProcess = am.getRunningAppProcesses();
+		for(ActivityManager.RunningAppProcessInfo processInfo:listProcess){
+			if (processInfo.pid == pID) {
+				processName = processInfo.processName;
+				return processName;
+			}
+		}
+		return processName;
 	}
 
 }
