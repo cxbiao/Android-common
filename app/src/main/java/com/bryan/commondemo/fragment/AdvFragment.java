@@ -77,7 +77,10 @@ public class AdvFragment extends BaseFragment {
         list.add(R.mipmap.img8);
 
         //设置OffscreenPageLimit
+
+
         mViewPager.setOffscreenPageLimit(list.size());
+        mViewPager.setPageMargin(40);
         mPagerAdapter = new MyAdapter(list);
         mViewPager.setAdapter(mPagerAdapter);
 

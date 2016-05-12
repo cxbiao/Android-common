@@ -34,11 +34,14 @@
 
         <com.bryan.commondemo.widget.ClipViewPager
             android:id="@+id/viewpager"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
             android:layout_height="200dp"
             android:layout_centerInParent="true"
             android:clipChildren="false"
-            android:overScrollMode="never" />
+            android:overScrollMode="never"
+            />
     </RelativeLayout>
 
 </LinearLayout>

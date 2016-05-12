@@ -11,8 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -31,6 +33,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
     private MyPagerAdapter myPagerAdapter;
     private boolean isAutoScrolling=true;
     private int timeSpan=5000;
+    protected int scrollSpeed = 450;
 
     //需要维护的页面指向的索引值
     private int oldPosition = 0;
@@ -48,6 +51,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
 
     private void initView() {
 
+        setScrollSpeed();
         this.addOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -108,7 +112,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
 
             int pos = getCurrentItem() + 1;
             if (pos == TOTAL_PAGER_SIZE - 1) {
-                setCurrentItem(1, false);
+                setCurrentItem(1,false);
             } else {
                 setCurrentItem(pos);
             }
@@ -164,7 +168,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
             myPagerAdapter = new MyPagerAdapter();
             this.setAdapter(myPagerAdapter);
             //切换动画效果,用不用随你,各种效果都能做
-            //setPageTransformer(true, new DepthPageTransformer());
+           //setPageTransformer(true, new DepthPageTransformer());
         } else {
             myPagerAdapter.notifyDataSetChanged();
         }
@@ -187,6 +191,19 @@ public abstract  class BaseRollPager<T> extends ViewPager {
 
 
     protected abstract View onCreateView(ViewGroup container, int position);
+
+    /** set scroll speed */
+    private void setScrollSpeed() {
+        try {
+            Field mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
+            FixedSpeedScroller myScroller = new FixedSpeedScroller(getContext(), interpolator, scrollSpeed);
+            mScroller.set(this, myScroller);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -271,6 +288,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
             container.removeView((View) object);
         }
 
+        //这种方法加PageTransformer动画，从第一张右滑到最后一张有问题
         @Override
         public void finishUpdate(ViewGroup container) {
             if(list.size()==1) return;
@@ -278,9 +296,9 @@ public abstract  class BaseRollPager<T> extends ViewPager {
             Log.d(TAG, "finish update before, position=" + position);
             if (position == 0) {
                 position = list.size();
-                setCurrentItem(position, false);
+                setCurrentItem(position,false);
             } else if (position == TOTAL_PAGER_SIZE - 1) {
-                setCurrentItem(1, false);
+                setCurrentItem(1,false);
             }
             Log.d(TAG, "finish update after, position=" + position);
         }
@@ -298,18 +316,19 @@ public abstract  class BaseRollPager<T> extends ViewPager {
         private static final float MIN_SCALE = 0.75f;
 
         public void transformPage(View view, float position) {
+
             int pageWidth = view.getWidth();
 
-            if (position < -1) { // [-&,-1)  
+            if (position < -1) { // [-&,-1)
                 view.setAlpha(0);
 
-            } else if (position <= 0) { // [-1,0]  
+            } else if (position <= 0) { // [-1,0]
                 view.setAlpha(1);
                 view.setTranslationX(0);
                 view.setScaleX(1);
                 view.setScaleY(1);
 
-            } else if (position <= 1) { // (0,1]  
+            } else if (position <= 1) { // (0,1]
                 view.setAlpha(1 - position);
 
                 view.setTranslationX(pageWidth * -position);
@@ -319,7 +338,7 @@ public abstract  class BaseRollPager<T> extends ViewPager {
                 view.setScaleX(scaleFactor);
                 view.setScaleY(scaleFactor);
 
-            } else { // (1,+&]  
+            } else { // (1,+&]
                 view.setAlpha(0);
             }
         }
