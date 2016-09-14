@@ -30,8 +30,7 @@ dependencies {
     compile "com.android.support:support-v4:${rootProject.ext.supportVersion}"
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportVersion}"
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.alibaba:fastjson:1.1.46.android'
     compile 'de.greenrobot:greendao:2.0.0'
