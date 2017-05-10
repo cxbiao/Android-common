@@ -75,7 +75,7 @@ public class TabUtils {
 				@Override
 				public void onClick(View v) {
 					setTab(index);
-					if(listener!=null){
+					if(currentIndex!=index && listener != null){
 						listener.onClick(v, index);
 					}
 				}
