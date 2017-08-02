@@ -100,6 +100,12 @@ public class MainActivity extends BaseActivity {
         itemInfo4.info="多媒体";
         itemInfo4.fragmentName="com.bryan.commondemo.fragment.MediaFragment";
         mDatas.add(itemInfo4);
+
+        ItemInfo itemInfo5=new ItemInfo();
+        itemInfo5.info="进度度";
+        itemInfo5.isActivity=true;
+        itemInfo5.activityName="com.bryan.commondemo.activity.ProgressBarActivity";
+        mDatas.add(itemInfo5);
     }
 
 

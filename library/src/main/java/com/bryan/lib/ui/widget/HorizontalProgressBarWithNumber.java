@@ -169,17 +169,23 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 	{
 
 		canvas.save();
+		//画笔平移到指定paddingLeft， getHeight() / 2位置，注意以后坐标都为以此为0，0
 		canvas.translate(getPaddingLeft(), getHeight() / 2);
 
 		boolean noNeedBg = false;
+		//当前进度和总值的比例
 		float radio = getProgress() * 1.0f / getMax();
+		//已到达的宽度
 		float progressPosX = (int) (mRealWidth * radio);
+		//绘制的文本
 		String text = getProgress() + "%";
 		// mPaint.getTextBounds(text, 0, text.length(), mTextBound);
 
+		//拿到字体的宽度和高度
 		float textWidth =mIfDrawText? mPaint.measureText(text):0;
 		float textHeight = (mPaint.descent() + mPaint.ascent()) / 2;
 
+		//如果到达最后，则未到达的进度条不需要绘制
 		if (progressPosX + textWidth > mRealWidth)
 		{
 			progressPosX = mRealWidth - textWidth;
@@ -187,6 +193,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 		}
 
 		// draw reached bar
+		// 绘制已到达的进度
 		float endX = progressPosX - mTextOffset / 2;
 		if (endX > 0)
 		{
@@ -196,6 +203,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 		}
 		// draw progress bar
 		// measure text bound
+		// 绘制文本
 		if (mIfDrawText)
 		{
 			mPaint.setColor(mTextColor);
@@ -203,6 +211,7 @@ public class HorizontalProgressBarWithNumber extends ProgressBar
 		}
 
 		// draw unreached bar
+		// 绘制未到达的进度条
 		if (!noNeedBg)
 		{
 			float start = progressPosX + mTextOffset / 2 + textWidth;

@@ -49,6 +49,10 @@
             android:name=".activity.AutoAudioActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.ProgressBarActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
