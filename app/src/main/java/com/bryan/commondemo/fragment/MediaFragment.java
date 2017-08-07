@@ -51,9 +51,5 @@ public class MediaFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+
 }

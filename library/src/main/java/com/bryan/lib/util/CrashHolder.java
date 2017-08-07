@@ -141,6 +141,7 @@ public class CrashHolder implements Thread.UncaughtExceptionHandler {
 
 	private void startCatchActivity(Throwable throwable) {
 		String traces = getStackTrace(throwable);
+		Log.e("Error",traces);
 		Intent intent = new Intent(mContext, errorActivityClass);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("Error", traces);

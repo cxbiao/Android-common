@@ -17,7 +17,7 @@ import com.bryan.lib.ui.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,12 +26,13 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity {
 
 
-    @Bind(R.id.recyclerview)
+
+    @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
 
     private HomeAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private List<ItemInfo> mDatas=new ArrayList<ItemInfo>();
+    private List<ItemInfo> mDatas = new ArrayList<ItemInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +41,22 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initDatas();
-        layoutManager=new LinearLayoutManager(this);
-        mAdapter=new HomeAdapter(this,mDatas,R.layout.main_item);
+        layoutManager = new LinearLayoutManager(this);
+        mAdapter = new HomeAdapter(this, mDatas, R.layout.main_item);
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter(mAdapter);
         mAdapter.setOnItemClickLitener(new BaseQuickAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
                 try {
-                    if(mDatas.get(position).isActivity){
-                        Class clazz=Class.forName(mDatas.get(position).activityName);
-                        Intent intent=new Intent(MainActivity.this,clazz);
+                    if (mDatas.get(position).isActivity) {
+                        Class clazz = Class.forName(mDatas.get(position).activityName);
+                        Intent intent = new Intent(MainActivity.this, clazz);
                         startActivity(intent);
 
-                    }else{
-                        Intent intent=new Intent(MainActivity.this,SingleFragmentActivity.class);
-                        intent.putExtra("iteminfo",mDatas.get(position));
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, SingleFragmentActivity.class);
+                        intent.putExtra("iteminfo", mDatas.get(position));
                         startActivity(intent);
                     }
                 } catch (Exception e) {
@@ -73,38 +74,38 @@ public class MainActivity extends BaseActivity {
 
     private void initDatas() {
 
-        ItemInfo itemInfo0=new ItemInfo();
-        itemInfo0.info="广告图";
-        itemInfo0.fragmentName="com.bryan.commondemo.fragment.AdvFragment";
+        ItemInfo itemInfo0 = new ItemInfo();
+        itemInfo0.info = "广告图";
+        itemInfo0.fragmentName = "com.bryan.commondemo.fragment.AdvFragment";
         mDatas.add(itemInfo0);
 
 
-        ItemInfo itemInfo1=new ItemInfo();
-        itemInfo1.info="图像裁剪";
-        itemInfo1.isActivity=true;
-        itemInfo1.activityName="com.bryan.commondemo.activity.CropImageActivity";
+        ItemInfo itemInfo1 = new ItemInfo();
+        itemInfo1.info = "图像裁剪";
+        itemInfo1.isActivity = true;
+        itemInfo1.activityName = "com.bryan.commondemo.activity.CropImageActivity";
         mDatas.add(itemInfo1);
 
-        ItemInfo itemInfo2=new ItemInfo();
-        itemInfo2.info="各类对话框";
-        itemInfo2.fragmentName="com.bryan.commondemo.fragment.MyDialogFragment";
+        ItemInfo itemInfo2 = new ItemInfo();
+        itemInfo2.info = "各类对话框";
+        itemInfo2.fragmentName = "com.bryan.commondemo.fragment.MyDialogFragment";
         mDatas.add(itemInfo2);
 
-        ItemInfo itemInfo3=new ItemInfo();
-        itemInfo3.info="wheelview实例";
-        itemInfo3.fragmentName="com.bryan.commondemo.fragment.WheelViewFragment";
+        ItemInfo itemInfo3 = new ItemInfo();
+        itemInfo3.info = "wheelview实例";
+        itemInfo3.fragmentName = "com.bryan.commondemo.fragment.WheelViewFragment";
         mDatas.add(itemInfo3);
 
 
-        ItemInfo itemInfo4=new ItemInfo();
-        itemInfo4.info="多媒体";
-        itemInfo4.fragmentName="com.bryan.commondemo.fragment.MediaFragment";
+        ItemInfo itemInfo4 = new ItemInfo();
+        itemInfo4.info = "多媒体";
+        itemInfo4.fragmentName = "com.bryan.commondemo.fragment.MediaFragment";
         mDatas.add(itemInfo4);
 
-        ItemInfo itemInfo5=new ItemInfo();
-        itemInfo5.info="进度度";
-        itemInfo5.isActivity=true;
-        itemInfo5.activityName="com.bryan.commondemo.activity.ProgressBarActivity";
+        ItemInfo itemInfo5 = new ItemInfo();
+        itemInfo5.info = "进度度";
+        itemInfo5.isActivity = true;
+        itemInfo5.activityName = "com.bryan.commondemo.activity.ProgressBarActivity";
         mDatas.add(itemInfo5);
     }
 

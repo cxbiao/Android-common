@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,9 +28,10 @@ import butterknife.OnClick;
  */
 public class WheelViewFragment extends BaseFragment {
 
-    @Bind(R.id.tvTime)
+
+    @BindView(R.id.tvTime)
     TextView tvTime;
-    @Bind(R.id.tvOptions)
+    @BindView(R.id.tvOptions)
     TextView tvOptions;
     private ArrayList<String> options1Items = new ArrayList<String>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<ArrayList<String>>();
@@ -38,8 +39,6 @@ public class WheelViewFragment extends BaseFragment {
 
     TimePopupWindow pwTime;
     OptionsPopupWindow pwOptions;
-
-
 
 
     @Nullable
@@ -149,9 +148,5 @@ public class WheelViewFragment extends BaseFragment {
         return format.format(date);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+
 }
