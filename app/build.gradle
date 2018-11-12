@@ -4,9 +4,9 @@ apply plugin: 'com.android.application'
 String releaseTime() {
     SimpleDateFormat  sf=new SimpleDateFormat("yyyy-MM-dd-HH-mm")
     String path=sf.format(new Date())
-    return path;
+    return path
 }
-String desPath=new File("").getAbsolutePath()+"/release";
+String desPath=new File("").getAbsolutePath()+"/release"
 android {
     signingConfigs {
         config {
@@ -51,26 +51,28 @@ android {
             signingConfig signingConfigs.config
             //将release版本的包名重命名，加上日期及版本
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('release.apk')) {
-                        def fileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
-                        output.outputFile = new File(desPath, fileName)
+                variant.outputs.all { output ->
+                    if (outputFile != null && outputFileName.endsWith('release.apk')) {
+                        outputFileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
                     }
                 }
             }
         }
     }
+    flavorDimensions "my"
 
     productFlavors {
         baidu {
             resValue "string", "app_name", "百度版"
+            dimension "my"
         }
         qq {
             resValue "string", "app_name", "qq版"
+            dimension "my"
         }
         googleplay {
             resValue "string", "app_name", "google版"
+            dimension "my"
         }
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
@@ -113,10 +115,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':library')
-    compile 'com.jakewharton:butterknife:8.7.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':library')
+    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
 
 }
 

@@ -433,7 +433,7 @@ public class ImageUtils {
         }
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawBitmap(markImg, x, y, /* paint */null);// 插入图标
-        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.save();
         // 存储新合成的图片
         canvas.restore();
 
