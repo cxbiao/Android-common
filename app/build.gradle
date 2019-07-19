@@ -49,14 +49,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            //将release版本的包名重命名，加上日期及版本
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    if (outputFile != null && outputFileName.endsWith('release.apk')) {
-                        outputFileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
-                    }
-                }
-            }
+
         }
     }
     flavorDimensions "my"
@@ -105,20 +98,32 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
+//    applicationVariants.all { variant ->
+//        variant.outputs.all { output ->
+//            if (outputFile != null outputFileName.endsWith('release.apk')) {
+//                outputFileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
+//            }
+//        }
+//    }
 
 
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
+        }
+    }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':library')
-    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+    api project(':library')
+    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
 
 }
 

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
     buildToolsVersion  ANDROID_BUILD_TOOLS_VERSION
@@ -16,7 +17,10 @@ android {
         }
     }
 
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     lintOptions {
         abortOnError false
@@ -27,14 +31,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api "com.android.support:support-v4:${rootProject.ext.supportVersion}"
-    api "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}"
-    api "com.android.support:recyclerview-v7:${rootProject.ext.supportVersion}"
+    api "com.android.support:support-v4:28.0.0"
+    api "com.android.support:appcompat-v7:28.0.0"
+    api "com.android.support:recyclerview-v7:28.0.0"
     api 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.nineoldandroids:library:2.4.0'
     api 'com.alibaba:fastjson:1.1.68.android'
     api 'org.greenrobot:greendao:2.2.1'
-    api 'com.jakewharton:butterknife:9.0.0-rc1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
     api files('libs/FlycoDialog.jar')
 }
