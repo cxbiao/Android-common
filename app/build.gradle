@@ -1,6 +1,7 @@
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
+
 String releaseTime() {
     SimpleDateFormat  sf=new SimpleDateFormat("yyyy-MM-dd-HH-mm")
     String path=sf.format(new Date())
@@ -104,7 +105,7 @@ android {
 
 //    applicationVariants.all { variant ->
 //        variant.outputs.all { output ->
-//            if (outputFile != null outputFileName.endsWith('release.apk')) {
+//            if (outputFile != null && outputFileName.endsWith('release.apk')) {
 //                outputFileName = "${variant.productFlavors[0].name}_${releaseTime()}_${defaultConfig.versionName}.apk"
 //            }
 //        }
@@ -122,8 +123,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(':library')
-    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
 }
 

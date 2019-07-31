@@ -16,7 +16,7 @@ package com.bryan.lib.util;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * Author：Cxb on 2016/1/22 13:55

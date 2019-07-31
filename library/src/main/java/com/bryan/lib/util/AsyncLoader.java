@@ -16,7 +16,7 @@
 package com.bryan.lib.util;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 
 /**
  * loader 内部类继承时需要是静态类

@@ -2,7 +2,7 @@ package com.bryan.commondemo.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by Administrator on 2015/10/8.

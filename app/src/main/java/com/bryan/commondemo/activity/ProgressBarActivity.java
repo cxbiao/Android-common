@@ -2,7 +2,7 @@ package com.bryan.commondemo.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bryan.commondemo.R;
 import com.bryan.lib.ui.widget.HorizontalProgressBarWithNumber;
