@@ -33,13 +33,13 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api 'androidx.legacy:legacy-support-v4:1.0.0'
-    api 'androidx.appcompat:appcompat:1.0.2'
-    api 'androidx.recyclerview:recyclerview:1.0.0'
-    api 'com.squareup.okhttp3:okhttp:4.0.1'
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.nineoldandroids:library:2.4.0'
     api 'com.alibaba:fastjson:1.1.71.android'
     api 'org.greenrobot:greendao:3.2.2'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     api files('libs/FlycoDialog.jar')
 }
